@@ -39,15 +39,13 @@ export default function Cases() {
 
   return (
     <div className="space-y-5">
-      <div className="flex items-center justify-between">
-        <div>
-          <h2 className="text-xl font-bold text-gray-900">Enforcement Cases</h2>
-          <p className="text-gray-500 text-sm">Counterfeit, IP violation, and smuggling cases</p>
-        </div>
+      <div>
+        <h2 className="text-xl font-bold text-gray-900">Enforcement Cases</h2>
+        <p className="text-gray-500 text-sm">Counterfeit, IP violation, and smuggling cases</p>
       </div>
 
       {/* Priority summary */}
-      <div className="grid grid-cols-4 gap-4">
+      <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 md:gap-4">
         {[['Critical', 'bg-red-50 border-red-200 text-red-900'], ['High', 'bg-orange-50 border-orange-200 text-orange-900'], ['Medium', 'bg-amber-50 border-amber-200 text-amber-900'], ['Low', 'bg-gray-50 border-gray-200 text-gray-900']].map(([p, cls]) => (
           <div key={p} className={`rounded-xl p-4 border ${cls} cursor-pointer hover:shadow-md transition-shadow`} onClick={() => setPriorityFilter(priorityFilter === p ? '' : p)}>
             <div className="text-2xl font-bold">{priorityCounts[p] || 0}</div>

@@ -50,18 +50,18 @@ export default function Products() {
   return (
     <div className="space-y-5">
       {/* Header */}
-      <div className="flex items-center justify-between">
+      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
         <div>
           <h2 className="text-xl font-bold text-gray-900">Products Registry</h2>
           <p className="text-gray-500 text-sm">Registered products across all agencies</p>
         </div>
-        <button className="flex items-center gap-2 px-4 py-2 text-white rounded-lg text-sm" style={{ backgroundColor: currentAgency?.color || '#003087' }}>
+        <button className="flex items-center gap-2 px-4 py-2 text-white rounded-lg text-sm self-start" style={{ backgroundColor: currentAgency?.color || '#003087' }}>
           <Plus size={16} /> Register Product
         </button>
       </div>
 
       {/* Summary */}
-      <div className="grid grid-cols-4 gap-4">
+      <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 md:gap-4">
         {[['Total Products', counts.total, 'bg-blue-50 text-blue-800'], ['Registered', counts.registered, 'bg-green-50 text-green-800'], ['Pending', counts.pending, 'bg-amber-50 text-amber-800'], ['Suspended', counts.suspended, 'bg-red-50 text-red-800']].map(([label, val, cls]) => (
           <div key={label} className={`rounded-xl p-4 ${cls}`}>
             <div className="text-2xl font-bold">{val}</div>

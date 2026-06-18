@@ -35,18 +35,18 @@ export default function Inspection() {
 
   return (
     <div className="space-y-5">
-      <div className="flex items-center justify-between">
+      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
         <div>
           <h2 className="text-xl font-bold text-gray-900">Inspection Management</h2>
           <p className="text-gray-500 text-sm">Field inspections across all agencies and counties</p>
         </div>
-        <button className="flex items-center gap-2 px-4 py-2 text-white rounded-lg text-sm hover:opacity-90" style={{ backgroundColor: agencyColor }}>
+        <button className="flex items-center gap-2 px-4 py-2 text-white rounded-lg text-sm hover:opacity-90 self-start" style={{ backgroundColor: agencyColor }}>
           <Plus size={16} /> New Inspection
         </button>
       </div>
 
       {/* Stats */}
-      <div className="grid grid-cols-4 gap-4">
+      <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 md:gap-4">
         {[
           ['Total This Month', inspections.length, 'bg-blue-50 text-blue-800', ClipboardCheck],
           ['Scheduled', scheduled.length, 'bg-amber-50 text-amber-800', Calendar],

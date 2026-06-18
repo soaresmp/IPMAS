@@ -31,23 +31,23 @@ export default function Dashboard() {
   return (
     <div className="space-y-6">
       {/* Header */}
-      <div className="flex items-center justify-between">
+      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
         <div>
-          <h2 className="text-2xl font-bold text-gray-900">{greeting}, {currentUser?.name}</h2>
+          <h2 className="text-xl md:text-2xl font-bold text-gray-900">{greeting}, {currentUser?.name}</h2>
           <p className="text-gray-500 text-sm mt-0.5">{currentAgency?.name} — {currentUser?.role}</p>
         </div>
         <div className="flex gap-2">
-          <button onClick={() => navigate('/verification')} className="flex items-center gap-2 px-4 py-2 bg-white border border-gray-200 rounded-lg text-sm text-gray-700 hover:bg-gray-50">
-            <Search size={16} /> Verify Product
+          <button onClick={() => navigate('/verification')} className="flex items-center gap-2 px-3 md:px-4 py-2 bg-white border border-gray-200 rounded-lg text-sm text-gray-700 hover:bg-gray-50">
+            <Search size={16} /> <span className="hidden sm:inline">Verify Product</span><span className="sm:hidden">Verify</span>
           </button>
-          <button onClick={() => navigate('/inspection')} className="flex items-center gap-2 px-4 py-2 text-white rounded-lg text-sm hover:opacity-90" style={{ backgroundColor: agencyColor }}>
-            <Plus size={16} /> New Inspection
+          <button onClick={() => navigate('/inspection')} className="flex items-center gap-2 px-3 md:px-4 py-2 text-white rounded-lg text-sm hover:opacity-90" style={{ backgroundColor: agencyColor }}>
+            <Plus size={16} /> <span className="hidden sm:inline">New Inspection</span><span className="sm:hidden">Inspect</span>
           </button>
         </div>
       </div>
 
       {/* KPI cards */}
-      <div className="grid grid-cols-4 gap-4">
+      <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 md:gap-4">
         {statCards.map((card, i) => (
           <div key={i} className="bg-white rounded-xl shadow-sm border border-gray-100 p-5">
             <div className="text-xs font-medium text-gray-500 uppercase tracking-wide mb-2">{card.label}</div>
@@ -60,9 +60,9 @@ export default function Dashboard() {
       </div>
 
       {/* Chart + Activity */}
-      <div className="grid grid-cols-3 gap-6">
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-4 md:gap-6">
         {/* Area Chart */}
-        <div className="col-span-2 bg-white rounded-xl shadow-sm border border-gray-100 p-6">
+        <div className="lg:col-span-2 bg-white rounded-xl shadow-sm border border-gray-100 p-4 md:p-6">
           <h3 className="text-sm font-semibold text-gray-900 mb-4">Monthly Marks Issued by Agency</h3>
           <ResponsiveContainer width="100%" height={260}>
             <AreaChart data={chartData.monthlyMarks} margin={{ top: 5, right: 10, left: 0, bottom: 5 }}>
@@ -104,7 +104,7 @@ export default function Dashboard() {
       </div>
 
       {/* Quick Actions */}
-      <div className="grid grid-cols-4 gap-4">
+      <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 md:gap-4">
         {[
           { label: 'Register Product', desc: 'Add new product to registry', icon: Plus, path: '/products' },
           { label: 'Issue Marks', desc: 'Issue marks to manufacturer', icon: FileText, path: '/marks' },

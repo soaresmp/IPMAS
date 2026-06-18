@@ -15,19 +15,19 @@ export default function Reports() {
   return (
     <div className="space-y-6">
       {/* Header */}
-      <div className="flex items-center justify-between">
+      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
         <div>
           <h2 className="text-xl font-bold text-gray-900">Analytics &amp; Reports</h2>
           <p className="text-gray-500 text-sm">System-wide performance metrics and enforcement data</p>
         </div>
-        <div className="flex items-center gap-3">
+        <div className="flex flex-wrap items-center gap-2">
           <div className="flex items-center gap-2">
             <label className="text-sm text-gray-600">From:</label>
-            <input type="date" value={dateFrom} onChange={e => setDateFrom(e.target.value)} className="border border-gray-300 rounded-lg px-3 py-1.5 text-sm focus:outline-none" />
+            <input type="date" value={dateFrom} onChange={e => setDateFrom(e.target.value)} className="border border-gray-300 rounded-lg px-2 py-1.5 text-sm focus:outline-none" />
           </div>
           <div className="flex items-center gap-2">
             <label className="text-sm text-gray-600">To:</label>
-            <input type="date" value={dateTo} onChange={e => setDateTo(e.target.value)} className="border border-gray-300 rounded-lg px-3 py-1.5 text-sm focus:outline-none" />
+            <input type="date" value={dateTo} onChange={e => setDateTo(e.target.value)} className="border border-gray-300 rounded-lg px-2 py-1.5 text-sm focus:outline-none" />
           </div>
           <button onClick={() => alert('Exporting CSV...')} className="flex items-center gap-2 px-3 py-2 border border-gray-300 rounded-lg text-sm text-gray-700 hover:bg-gray-50">
             <Download size={14} /> CSV
@@ -39,7 +39,7 @@ export default function Reports() {
       </div>
 
       {/* Charts grid */}
-      <div className="grid grid-cols-2 gap-6">
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 md:gap-6">
         {/* Monthly Marks */}
         <div className="bg-white rounded-xl shadow-sm border border-gray-100 p-6">
           <h3 className="text-sm font-semibold text-gray-900 mb-4">Monthly Marks Issued by Agency</h3>

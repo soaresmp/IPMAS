@@ -34,9 +34,9 @@ export default function TrackTrace() {
   const notFound = searched && result === undefined
 
   return (
-    <div className="flex gap-6 h-full">
+    <div className="flex flex-col md:flex-row gap-4 md:gap-6">
       {/* Left panel */}
-      <div className="w-80 flex-shrink-0 space-y-4">
+      <div className="w-full md:w-80 md:flex-shrink-0 space-y-4">
         <div className="bg-white rounded-xl border border-gray-100 shadow-sm p-4">
           <h3 className="text-sm font-semibold text-gray-900 mb-3">Track a Product</h3>
           <div className="flex gap-2">

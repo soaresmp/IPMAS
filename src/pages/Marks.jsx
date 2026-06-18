@@ -23,18 +23,18 @@ export default function Marks() {
 
   return (
     <div className="space-y-5">
-      <div className="flex items-center justify-between">
+      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
         <div>
           <h2 className="text-xl font-bold text-gray-900">Marks Management</h2>
           <p className="text-gray-500 text-sm">Government marks issued to manufacturers</p>
         </div>
-        <button className="flex items-center gap-2 px-4 py-2 text-white rounded-lg text-sm hover:opacity-90" style={{ backgroundColor: agencyColor }}>
+        <button className="flex items-center gap-2 px-4 py-2 text-white rounded-lg text-sm hover:opacity-90 self-start" style={{ backgroundColor: agencyColor }}>
           <Plus size={16} /> Issue New Marks
         </button>
       </div>
 
       {/* Tabs */}
-      <div className="flex gap-1 bg-gray-100 rounded-lg p-1 w-fit">
+      <div className="flex gap-1 bg-gray-100 rounded-lg p-1 overflow-x-auto">
         {[['issued', `Issued Marks (${issued.length})`], ['pending', `Pending Approval (${pending.length})`], ['inventory', `All Inventory (${all.length})`]].map(([key, label]) => (
           <button key={key} onClick={() => setTab(key)} className={`px-4 py-2 rounded-md text-sm font-medium transition-all ${tab === key ? 'bg-white shadow text-gray-900' : 'text-gray-600 hover:text-gray-900'}`}>
             {label}
