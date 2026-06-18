@@ -1,203 +1,154 @@
 import { useState } from 'react'
-import { ScanLine, Search, CheckCircle, AlertTriangle, Shield, Package } from 'lucide-react'
-import Header from '../components/layout/Header'
-import Modal from '../components/common/Modal'
-import { useApp } from '../context/AppContext'
-
-import { traceEvents } from '../data/mockData'
-
-const agencyColors = { KRA:'#003087', KEBS:'#006600', ACA:'#BB0000', KEPHIS:'#228B22', PPB:'#1a5276' }
+import { traceEvents } from '../data/mockData.js'
+import { ShieldCheck, CheckCircle, XCircle, Search, X } from 'lucide-react'
 
 export default function Verification() {
-  const { currentAgency } = useApp()
-  const agency = currentAgency
   const [query, setQuery] = useState('')
-  const [result, setResult] = useState(null)
+  const [result, setResult] = useState(undefined)
   const [searched, setSearched] = useState(false)
   const [showReport, setShowReport] = useState(false)
+  const [reportForm, setReportForm] = useState({ contact: '', description: '', location: '' })
 
-  const doVerify = (q) => {
-    const key = q.trim().toUpperCase()
+  function handleVerify(q) {
+    const key = (q !== undefined ? q : query).trim()
     if (!key) return
-    const data = traceEvents[key] ?? undefined
-    setResult(data === undefined ? 'not_found' : data)
+    setQuery(key)
     setSearched(true)
+    if (key in traceEvents) {
+      setResult(traceEvents[key])
+    } else {
+      setResult(null)
+    }
   }
 
-  const demos = [
-    { code:'GOK-2024-TUSKER-001', label:'Tusker Lager 500ml', result:'AUTHENTIC' },
-    { code:'GOK-2024-AMOX-003', label:'Amoxicillin 500mg', result:'AUTHENTIC' },
-    { code:'GOK-FAKE-0001', label:'Unknown product', result:'NOT VERIFIED' },
-  ]
+  const isAuthentic = searched && result !== null && result !== undefined && Array.isArray(result)
+  const isFake = searched && result === null
+
+  const firstEvent = isAuthentic ? result[0] : null
+  const lastEvent = isAuthentic ? result[result.length - 1] : null
 
   return (
-    <div className="flex flex-col flex-1">
-      <Header title="Product Verification" subtitle="Verify Government of Kenya Mark authenticity in real time" />
-      <main className="flex-1 p-8">
-        <div className="max-w-2xl mx-auto">
-
-          {/* Search box */}
-          <div className="bg-white rounded-2xl shadow-sm border border-gray-100 p-8 mb-6">
-            <div className="text-center mb-6">
-              <div className="w-16 h-16 rounded-2xl flex items-center justify-center mx-auto mb-4"
-                style={{ backgroundColor: agency?.color || '#003087' }}>
-                <ScanLine size={28} className="text-white" />
-              </div>
-              <h2 className="text-xl font-bold text-gray-900">Verify a Government Mark</h2>
-              <p className="text-gray-500 text-sm mt-1">Enter the Mark ID or scan the QR code on your product</p>
-            </div>
-
-            <div className="relative mb-4">
-              <Search size={16} className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400" />
-              <input
-                value={query} onChange={e => setQuery(e.target.value)}
-                onKeyDown={e => e.key === 'Enter' && doVerify(query)}
-                placeholder="e.g. GOK-2024-TUSKER-001"
-                className="w-full pl-12 pr-4 py-4 text-base border-2 border-gray-200 rounded-xl focus:outline-none focus:border-blue-400 transition-colors"
-              />
-            </div>
-            <button onClick={() => doVerify(query)}
-              className="w-full py-3.5 text-base font-semibold text-white rounded-xl transition-all hover:opacity-90"
-              style={{ backgroundColor: agency?.color || '#003087' }}>
-              Verify Product
-            </button>
-
-            <div className="mt-5 pt-5 border-t border-gray-100">
-              <p className="text-xs text-gray-400 text-center mb-3">Try these demo codes</p>
-              <div className="grid grid-cols-3 gap-2">
-                {demos.map(d => (
-                  <button key={d.code} onClick={() => { setQuery(d.code); doVerify(d.code) }}
-                    className={`p-3 rounded-xl border-2 text-left transition-all hover:shadow-sm ${d.result === 'AUTHENTIC' ? 'border-green-200 bg-green-50' : 'border-red-200 bg-red-50'}`}>
-                    <div className={`text-xs font-bold mb-1 ${d.result === 'AUTHENTIC' ? 'text-green-700' : 'text-red-700'}`}>{d.result}</div>
-                    <div className="text-xs font-mono text-gray-500">{d.code}</div>
-                    <div className="text-xs text-gray-400">{d.label}</div>
-                  </button>
-                ))}
-              </div>
-            </div>
-          </div>
-
-          {/* Results */}
-          {searched && (
-            <div className="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden">
-              {result && result !== 'not_found' && result?.authentic ? (
-                <>
-                  <div className="px-8 py-6 flex items-center gap-4" style={{ backgroundColor: '#006600' }}>
-                    <div className="w-14 h-14 bg-white/20 rounded-full flex items-center justify-center">
-                      <CheckCircle size={30} className="text-white" />
-                    </div>
-                    <div>
-                      <div className="text-2xl font-black text-white">AUTHENTIC ✓</div>
-                      <div className="text-green-100 text-sm mt-0.5">Verified in IPMAS Government of Kenya Database</div>
-                    </div>
-                  </div>
-                  <div className="p-8">
-                    <div className="flex items-start gap-6">
-                      <div className="w-20 h-20 bg-gray-100 rounded-xl flex items-center justify-center flex-shrink-0">
-                        <Package size={32} className="text-gray-300" />
-                      </div>
-                      <div className="flex-1">
-                        <h3 className="text-xl font-bold text-gray-900">{result.product}</h3>
-                        <p className="text-gray-500 mt-1">{result.manufacturer}</p>
-                        <div className="flex flex-wrap gap-1 mt-2">
-                          {result.agencies?.map(a => (
-                            <span key={a} className="px-2 py-0.5 rounded-full text-xs font-semibold text-white" style={{ backgroundColor: agencyColors[a] }}>{a} Certified</span>
-                          ))}
-                        </div>
-                      </div>
-                    </div>
-
-                    <div className="grid grid-cols-2 gap-4 mt-6">
-                      {[
-                        ['Batch ID', result.batchId],
-                        ['Production Date', result.productionDate],
-                        ['Expiry Date', result.expiryDate],
-                        ['Supply Chain Events', `${result.events?.length} events recorded`],
-                      ].map(([k, v]) => (
-                        <div key={k} className="bg-gray-50 rounded-xl p-4">
-                          <div className="text-xs text-gray-500 mb-1">{k}</div>
-                          <div className="font-semibold text-gray-900">{v}</div>
-                        </div>
-                      ))}
-                    </div>
-
-                    <div className="mt-5 p-4 bg-green-50 rounded-xl border border-green-100">
-                      <div className="flex items-center gap-2 text-green-700 font-medium text-sm">
-                        <Shield size={15} /> This product has a complete and verified Government of Kenya Mark audit trail.
-                      </div>
-                    </div>
-                  </div>
-                </>
-              ) : (
-                <>
-                  <div className="px-8 py-6 flex items-center gap-4 bg-red-600">
-                    <div className="w-14 h-14 bg-white/20 rounded-full flex items-center justify-center">
-                      <AlertTriangle size={30} className="text-white" />
-                    </div>
-                    <div>
-                      <div className="text-2xl font-black text-white">⚠ NOT VERIFIED</div>
-                      <div className="text-red-100 text-sm mt-0.5">This mark was not found in the IPMAS database</div>
-                    </div>
-                  </div>
-                  <div className="p-8">
-                    <div className="p-5 bg-red-50 border border-red-100 rounded-xl mb-5">
-                      <p className="text-red-700 font-medium text-sm">This product may be:</p>
-                      <ul className="list-disc list-inside text-red-600 text-sm mt-2 space-y-1">
-                        <li>Counterfeit — mark is fabricated or altered</li>
-                        <li>Smuggled — imported without Government Mark</li>
-                        <li>Expired — mark has been reused illegally</li>
-                        <li>Not yet registered in IPMAS</li>
-                      </ul>
-                    </div>
-                    <p className="text-gray-600 text-sm mb-4"><strong>Code checked:</strong> <span className="font-mono">{query}</span></p>
-                    <button onClick={() => setShowReport(true)}
-                      className="w-full py-3 text-sm font-semibold text-white rounded-xl bg-red-600 hover:bg-red-700 transition-colors">
-                      Report Suspicious Product to ACA
-                    </button>
-                  </div>
-                </>
-              )}
-            </div>
-          )}
+    <div className="max-w-2xl mx-auto space-y-6">
+      {/* Header */}
+      <div className="text-center">
+        <div className="flex items-center justify-center gap-3 mb-2">
+          <ShieldCheck size={32} className="text-green-600" />
+          <h2 className="text-2xl font-bold text-gray-900">Verify Product Authenticity</h2>
         </div>
-      </main>
+        <p className="text-gray-500 text-sm">Check if a product has a valid government mark</p>
+      </div>
 
-      <Modal isOpen={showReport} onClose={() => setShowReport(false)} title="Report Suspicious Product">
-        <div className="space-y-4 text-sm">
-          <div className="p-3 bg-amber-50 border border-amber-100 rounded-lg text-amber-700">
-            Your report will be submitted to the Anti-Counterfeit Authority (ACA) for investigation.
+      {/* Search box */}
+      <div className="bg-white rounded-2xl shadow-sm border border-gray-100 p-6">
+        <label className="block text-sm font-medium text-gray-700 mb-2">Mark ID, Serial Number, or QR Code</label>
+        <div className="flex gap-3">
+          <input
+            value={query}
+            onChange={e => setQuery(e.target.value)}
+            onKeyDown={e => e.key === 'Enter' && handleVerify()}
+            placeholder="e.g. GOK-2024-TUSKER-001-487200"
+            className="flex-1 border border-gray-300 rounded-xl px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-green-500"
+          />
+          <button onClick={() => handleVerify()} className="px-6 py-3 bg-green-600 text-white rounded-xl font-medium text-sm hover:bg-green-700 flex items-center gap-2">
+            <Search size={16} /> Verify
+          </button>
+        </div>
+        <div className="mt-4">
+          <p className="text-xs text-gray-500 mb-2">Sample codes to try:</p>
+          <div className="flex flex-wrap gap-2">
+            <button onClick={() => handleVerify('GOK-2024-TUSKER-001-487200')} className="px-3 py-1 bg-green-50 border border-green-200 rounded-full text-xs text-green-700 hover:bg-green-100">Try: GOK-2024-TUSKER-001-487200</button>
+            <button onClick={() => handleVerify('GOK-2024-AMOX-003-187600')} className="px-3 py-1 bg-green-50 border border-green-200 rounded-full text-xs text-green-700 hover:bg-green-100">Try: GOK-2024-AMOX-003-187600</button>
+            <button onClick={() => handleVerify('GOK-FAKE-0001')} className="px-3 py-1 bg-red-50 border border-red-200 rounded-full text-xs text-red-700 hover:bg-red-100">Try: GOK-FAKE-0001</button>
           </div>
-          <div>
-            <label className="block text-xs font-medium text-gray-700 mb-1">Mark ID / Code Found</label>
-            <input defaultValue={query} className="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm font-mono focus:outline-none focus:ring-2 focus:ring-red-400" />
-          </div>
-          <div>
-            <label className="block text-xs font-medium text-gray-700 mb-1">Product Description</label>
-            <input placeholder="e.g. Shampoo bottle, red packaging" className="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none" />
-          </div>
-          <div className="grid grid-cols-2 gap-4">
+        </div>
+      </div>
+
+      {/* No search yet */}
+      {!searched && (
+        <div className="bg-white rounded-2xl shadow-sm border border-gray-100 p-8 text-center text-gray-400">
+          <ShieldCheck size={40} className="mx-auto mb-3 opacity-20" />
+          <p className="font-medium">Enter a code above to verify</p>
+          <p className="text-sm mt-1">Consumers can use this tool to confirm products are authentic and have valid government marks.</p>
+        </div>
+      )}
+
+      {/* Authentic */}
+      {isAuthentic && (
+        <div className="space-y-4">
+          <div className="bg-green-50 border-2 border-green-500 rounded-2xl p-5 flex items-center gap-4">
+            <CheckCircle size={36} className="text-green-600 flex-shrink-0" />
             <div>
-              <label className="block text-xs font-medium text-gray-700 mb-1">Purchase Location</label>
-              <input placeholder="e.g. Nakuru Town Mall" className="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none" />
+              <div className="text-xl font-bold text-green-800">PRODUCT VERIFIED — AUTHENTIC</div>
+              <div className="text-green-700 text-sm mt-0.5">This mark is registered in the IPMAS database and is valid.</div>
             </div>
+          </div>
+          <div className="bg-white rounded-2xl shadow-sm border border-gray-100 p-6 space-y-3">
+            <h3 className="font-semibold text-gray-900 mb-3">Product Details</h3>
+            <div className="grid grid-cols-2 gap-3 text-sm">
+              <div><div className="text-xs text-gray-500">Mark ID</div><div className="font-mono font-medium text-gray-900 text-xs">{query}</div></div>
+              <div><div className="text-xs text-gray-500">Supply Chain Events</div><div className="font-medium text-gray-900">{result.length} events recorded</div></div>
+              <div><div className="text-xs text-gray-500">Issuing Agency</div><div className="font-medium text-gray-900">{firstEvent?.agency}</div></div>
+              <div><div className="text-xs text-gray-500">Issued</div><div className="font-medium text-gray-900">{firstEvent?.timestamp?.split(' ')[0]}</div></div>
+              <div><div className="text-xs text-gray-500">Last Seen</div><div className="font-medium text-gray-900">{lastEvent?.location}</div></div>
+              <div><div className="text-xs text-gray-500">Last Event</div><div className="font-medium text-gray-900">{lastEvent?.event}</div></div>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Fake */}
+      {isFake && (
+        <div className="space-y-4">
+          <div className="bg-red-50 border-2 border-red-500 rounded-2xl p-5 flex items-center gap-4">
+            <XCircle size={36} className="text-red-600 flex-shrink-0" />
             <div>
-              <label className="block text-xs font-medium text-gray-700 mb-1">Your Phone (optional)</label>
-              <input type="tel" placeholder="+254 7XX XXX XXX" className="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none" />
+              <div className="text-xl font-bold text-red-800">WARNING — PRODUCT NOT VERIFIED</div>
+              <div className="text-red-700 text-sm mt-0.5">This mark was NOT found in the IPMAS database.</div>
             </div>
           </div>
-          <div>
-            <label className="block text-xs font-medium text-gray-700 mb-1">Additional Details</label>
-            <textarea rows={3} placeholder="Any other relevant information…" className="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none resize-none" />
-          </div>
-          <div className="flex gap-3 justify-end pt-2">
-            <button onClick={() => setShowReport(false)} className="px-4 py-2 text-sm border border-gray-200 rounded-lg">Cancel</button>
-            <button onClick={() => { alert(`Report submitted. Reference: RPT-ACA-${Date.now().toString().slice(-6)}\n\nACA will contact you within 48 hours.`); setShowReport(false) }}
-              className="px-5 py-2 text-sm text-white rounded-lg font-medium bg-red-600 hover:bg-red-700">
-              Submit Report
+          <div className="bg-white rounded-2xl shadow-sm border border-red-100 p-6">
+            <h3 className="font-semibold text-gray-900 mb-2">What this means</h3>
+            <ul className="text-sm text-gray-700 space-y-1 list-disc list-inside mb-4">
+              <li>This product may be counterfeit or illegally imported</li>
+              <li>The mark may have been tampered with or forged</li>
+              <li>Do not purchase or consume this product</li>
+              <li>Report to the Anti-Counterfeit Authority (ACA): 0800 720 660</li>
+            </ul>
+            <button onClick={() => setShowReport(true)} className="px-4 py-2 bg-red-600 text-white rounded-lg text-sm hover:bg-red-700">
+              Report This Product
             </button>
           </div>
         </div>
-      </Modal>
+      )}
+
+      {/* Report modal */}
+      {showReport && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center p-4">
+          <div className="bg-white rounded-2xl shadow-2xl w-full max-w-md p-6">
+            <div className="flex items-start justify-between mb-4">
+              <h3 className="text-lg font-bold text-gray-900">Report Suspected Counterfeit</h3>
+              <button onClick={() => setShowReport(false)} className="text-gray-400 hover:text-gray-600"><X size={20} /></button>
+            </div>
+            <div className="space-y-3">
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-1">Your Contact (Optional)</label>
+                <input value={reportForm.contact} onChange={e => setReportForm(f => ({ ...f, contact: e.target.value }))} placeholder="Phone or email" className="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-red-500" />
+              </div>
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-1">Location Found</label>
+                <input value={reportForm.location} onChange={e => setReportForm(f => ({ ...f, location: e.target.value }))} placeholder="Shop name, market, county" className="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-red-500" />
+              </div>
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-1">Description</label>
+                <textarea value={reportForm.description} onChange={e => setReportForm(f => ({ ...f, description: e.target.value }))} placeholder="Describe the product and where you found it..." rows={3} className="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-red-500" />
+              </div>
+              <button onClick={() => { alert('Report submitted to ACA. Reference: RPT-' + Date.now()); setShowReport(false) }} className="w-full py-2 bg-red-600 text-white rounded-lg text-sm font-medium hover:bg-red-700">
+                Submit Report to ACA
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   )
 }
