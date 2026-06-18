@@ -1,220 +1,155 @@
 import { useState } from 'react'
-import { Plus, ClipboardCheck, ChevronLeft, ChevronRight } from 'lucide-react'
-import Header from '../components/layout/Header'
-import StatusBadge from '../components/common/StatusBadge'
-import Modal from '../components/common/Modal'
-import { useApp } from '../context/AppContext'
+import { inspections } from '../data/mockData.js'
+import { useApp } from '../context/AppContext.jsx'
+import { Plus, X, ClipboardCheck, Calendar, CheckCircle, AlertTriangle } from 'lucide-react'
 
-import { inspections, counties } from '../data/mockData'
+const AGENCY_COLORS = { KRA: '#003087', KEBS: '#006600', ACA: '#BB0000', KEPHIS: '#228B22', PPB: '#1a5276' }
 
-const ITEMS = 8
-const agencyColors = { KRA:'#003087', KEBS:'#006600', ACA:'#BB0000', KEPHIS:'#228B22', PPB:'#1a5276' }
+function statusBadge(status) {
+  const map = { Completed: 'bg-green-100 text-green-800', Scheduled: 'bg-amber-100 text-amber-800', 'In Progress': 'bg-blue-100 text-blue-800' }
+  return <span className={`px-2 py-0.5 rounded-full text-xs font-medium ${map[status] || 'bg-gray-100 text-gray-800'}`}>{status}</span>
+}
 
 export default function Inspection() {
   const { currentAgency } = useApp()
-  const agency = currentAgency
-  const [filterAgency, setFilterAgency] = useState('')
-  const [filterStatus, setFilterStatus] = useState('')
-  const [filterType, setFilterType] = useState('')
-  const [page, setPage] = useState(1)
-  const [showModal, setShowModal] = useState(false)
+  const agencyColor = currentAgency?.color || '#003087'
+  const [agencyFilter, setAgencyFilter] = useState('')
+  const [countyFilter, setCountyFilter] = useState('')
+  const [typeFilter, setTypeFilter] = useState('')
+  const [statusFilter, setStatusFilter] = useState('')
   const [selected, setSelected] = useState(null)
 
-  const filtered = inspections.filter(i =>
-    (!filterAgency || i.inspectorAgency === filterAgency) &&
-    (!filterStatus || i.status === filterStatus) &&
-    (!filterType || i.type === filterType)
-  )
-  const totalPages = Math.ceil(filtered.length / ITEMS)
-  const pageItems = filtered.slice((page-1)*ITEMS, page*ITEMS)
+  const counties = [...new Set(inspections.map(i => i.county))].sort()
+  const types = [...new Set(inspections.map(i => i.type))].sort()
+
+  const filtered = inspections.filter(i => {
+    return (!agencyFilter || i.inspectorAgency === agencyFilter)
+      && (!countyFilter || i.county === countyFilter)
+      && (!typeFilter || i.type === typeFilter)
+      && (!statusFilter || i.status === statusFilter)
+  })
 
   const completed = inspections.filter(i => i.status === 'Completed')
-  const totalChecked = completed.reduce((s, i) => s + i.productsChecked, 0)
+  const scheduled = inspections.filter(i => i.status === 'Scheduled')
   const totalNonCompliant = completed.reduce((s, i) => s + i.nonCompliant, 0)
 
   return (
-    <div className="flex flex-col flex-1">
-      <Header title="Inspections & Enforcement" subtitle="Schedule, track and record field inspections across all counties" />
-      <main className="flex-1 p-8">
-
-        {/* Stats */}
-        <div className="grid grid-cols-4 gap-5 mb-6">
-          {[
-            { label:'Total This Month', value: inspections.length, color: agency?.color || '#003087' },
-            { label:'Scheduled', value: inspections.filter(i => i.status === 'Scheduled').length, color: '#1a5276' },
-            { label:'Completed', value: completed.length, color: '#006600' },
-            { label:'Non-Compliant Found', value: totalNonCompliant, color: '#BB0000' },
-          ].map(s => (
-            <div key={s.label} className="bg-white rounded-xl shadow-sm border border-gray-100 p-5">
-              <div className="text-xs text-gray-500 font-medium mb-1">{s.label}</div>
-              <div className="text-3xl font-bold" style={{ color: s.color }}>{s.value}</div>
-            </div>
-          ))}
+    <div className="space-y-5">
+      <div className="flex items-center justify-between">
+        <div>
+          <h2 className="text-xl font-bold text-gray-900">Inspection Management</h2>
+          <p className="text-gray-500 text-sm">Field inspections across all agencies and counties</p>
         </div>
+        <button className="flex items-center gap-2 px-4 py-2 text-white rounded-lg text-sm hover:opacity-90" style={{ backgroundColor: agencyColor }}>
+          <Plus size={16} /> New Inspection
+        </button>
+      </div>
 
-        <div className="bg-white rounded-xl shadow-sm border border-gray-100">
-          {/* Toolbar */}
-          <div className="px-6 py-4 border-b border-gray-100 flex flex-wrap gap-3 items-center">
-            <select value={filterAgency} onChange={e => { setFilterAgency(e.target.value); setPage(1) }}
-              className="text-sm border border-gray-200 rounded-lg px-3 py-2 focus:outline-none">
-              <option value="">All Agencies</option>
-              {['KRA','KEBS','ACA','KEPHIS','PPB'].map(a => <option key={a}>{a}</option>)}
-            </select>
-            <select value={filterType} onChange={e => { setFilterType(e.target.value); setPage(1) }}
-              className="text-sm border border-gray-200 rounded-lg px-3 py-2 focus:outline-none">
-              <option value="">All Types</option>
-              {['Routine','Targeted','Joint','Consumer Report'].map(t => <option key={t}>{t}</option>)}
-            </select>
-            <select value={filterStatus} onChange={e => { setFilterStatus(e.target.value); setPage(1) }}
-              className="text-sm border border-gray-200 rounded-lg px-3 py-2 focus:outline-none">
-              <option value="">All Statuses</option>
-              {['Scheduled','Completed'].map(s => <option key={s}>{s}</option>)}
-            </select>
-            <div className="flex-1" />
-            <button onClick={() => setShowModal(true)}
-              className="flex items-center gap-2 px-4 py-2 text-sm font-medium text-white rounded-lg"
-              style={{ backgroundColor: agency?.color || '#003087' }}>
-              <Plus size={15} /> New Inspection
-            </button>
+      {/* Stats */}
+      <div className="grid grid-cols-4 gap-4">
+        {[
+          ['Total This Month', inspections.length, 'bg-blue-50 text-blue-800', ClipboardCheck],
+          ['Scheduled', scheduled.length, 'bg-amber-50 text-amber-800', Calendar],
+          ['Completed', completed.length, 'bg-green-50 text-green-800', CheckCircle],
+          ['Non-Compliant Found', totalNonCompliant, 'bg-red-50 text-red-800', AlertTriangle],
+        ].map(([label, val, cls, Icon]) => (
+          <div key={label} className={`rounded-xl p-4 flex items-center gap-3 ${cls}`}>
+            <Icon size={20} className="opacity-60" />
+            <div>
+              <div className="text-2xl font-bold">{val}</div>
+              <div className="text-xs font-medium">{label}</div>
+            </div>
           </div>
+        ))}
+      </div>
 
-          <div className="overflow-x-auto">
-            <table className="w-full">
-              <thead>
-                <tr className="bg-gray-50 border-b border-gray-100">
-                  {['ID','Date','Inspector','Agency','County','Type','Location','Checked','Compliant','Non-Compliant','Status'].map(h => (
-                    <th key={h} className="px-4 py-3 text-left text-xs font-semibold text-gray-500 uppercase tracking-wide whitespace-nowrap">{h}</th>
-                  ))}
-                </tr>
-              </thead>
-              <tbody className="divide-y divide-gray-50">
-                {pageItems.map(ins => (
-                  <tr key={ins.id} className="hover:bg-gray-50 cursor-pointer" onClick={() => setSelected(ins)}>
-                    <td className="px-4 py-3 text-xs font-mono text-gray-500">{ins.id}</td>
-                    <td className="px-4 py-3 text-sm text-gray-700">{ins.date}</td>
-                    <td className="px-4 py-3 text-sm text-gray-900 font-medium">{ins.inspector}</td>
-                    <td className="px-4 py-3">
-                      <span className="px-1.5 py-0.5 rounded text-xs font-semibold text-white" style={{ backgroundColor: agencyColors[ins.inspectorAgency] }}>{ins.inspectorAgency}</span>
-                    </td>
-                    <td className="px-4 py-3 text-sm text-gray-600">{ins.county}</td>
-                    <td className="px-4 py-3">
-                      <span className={`text-xs font-medium px-2 py-0.5 rounded-full ${ins.type === 'Joint' ? 'bg-purple-100 text-purple-700' : ins.type === 'Targeted' ? 'bg-orange-100 text-orange-700' : ins.type === 'Consumer Report' ? 'bg-blue-100 text-blue-700' : 'bg-gray-100 text-gray-600'}`}>
-                        {ins.type}
-                      </span>
-                    </td>
-                    <td className="px-4 py-3 text-sm text-gray-600 max-w-xs truncate">{ins.location}</td>
-                    <td className="px-4 py-3 text-sm font-mono text-gray-700">{ins.productsChecked || '—'}</td>
-                    <td className="px-4 py-3 text-sm font-mono text-green-600">{ins.compliant || '—'}</td>
-                    <td className="px-4 py-3 text-sm font-mono text-red-600 font-semibold">{ins.nonCompliant || '—'}</td>
-                    <td className="px-4 py-3"><StatusBadge status={ins.status} /></td>
-                  </tr>
+      {/* Filters */}
+      <div className="bg-white rounded-xl border border-gray-100 shadow-sm p-4 flex flex-wrap gap-3">
+        <select value={agencyFilter} onChange={e => setAgencyFilter(e.target.value)} className="border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none">
+          <option value="">All Agencies</option>
+          {['KRA','KEBS','ACA','KEPHIS','PPB'].map(a => <option key={a}>{a}</option>)}
+        </select>
+        <select value={countyFilter} onChange={e => setCountyFilter(e.target.value)} className="border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none">
+          <option value="">All Counties</option>
+          {counties.map(c => <option key={c}>{c}</option>)}
+        </select>
+        <select value={typeFilter} onChange={e => setTypeFilter(e.target.value)} className="border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none">
+          <option value="">All Types</option>
+          {types.map(t => <option key={t}>{t}</option>)}
+        </select>
+        <select value={statusFilter} onChange={e => setStatusFilter(e.target.value)} className="border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none">
+          <option value="">All Statuses</option>
+          {['Completed','Scheduled','In Progress'].map(s => <option key={s}>{s}</option>)}
+        </select>
+      </div>
+
+      {/* Table */}
+      <div className="bg-white rounded-xl border border-gray-100 shadow-sm overflow-hidden">
+        <div className="overflow-x-auto">
+          <table className="w-full text-sm">
+            <thead className="bg-gray-50 text-xs text-gray-500 uppercase">
+              <tr>
+                {['ID','Date','Inspector','Agency','County','Type','Location','Checked','Compliant','Non-Compliant','Status','Actions'].map(h => (
+                  <th key={h} className="px-3 py-3 text-left font-medium whitespace-nowrap">{h}</th>
                 ))}
-              </tbody>
-            </table>
-          </div>
-
-          <div className="px-6 py-3 border-t border-gray-100 flex items-center justify-between">
-            <span className="text-xs text-gray-500">Showing {(page-1)*ITEMS+1}–{Math.min(page*ITEMS, filtered.length)} of {filtered.length}</span>
-            <div className="flex gap-2">
-              <button disabled={page === 1} onClick={() => setPage(p => p-1)} className="p-1.5 rounded border border-gray-200 disabled:opacity-40"><ChevronLeft size={14} /></button>
-              <button disabled={page >= totalPages} onClick={() => setPage(p => p+1)} className="p-1.5 rounded border border-gray-200 disabled:opacity-40"><ChevronRight size={14} /></button>
-            </div>
-          </div>
+              </tr>
+            </thead>
+            <tbody className="divide-y divide-gray-100">
+              {filtered.map(ins => {
+                const color = AGENCY_COLORS[ins.inspectorAgency] || '#666'
+                return (
+                  <tr key={ins.id} className="hover:bg-gray-50 cursor-pointer" onClick={() => setSelected(ins)}>
+                    <td className="px-3 py-3 font-mono text-xs text-blue-600">{ins.id}</td>
+                    <td className="px-3 py-3 text-gray-600 text-xs">{ins.date}</td>
+                    <td className="px-3 py-3 font-medium text-gray-900 whitespace-nowrap">{ins.inspector}</td>
+                    <td className="px-3 py-3"><span className="px-2 py-0.5 rounded text-xs font-bold text-white" style={{ backgroundColor: color }}>{ins.inspectorAgency}</span></td>
+                    <td className="px-3 py-3 text-gray-600">{ins.county}</td>
+                    <td className="px-3 py-3 text-gray-600 text-xs">{ins.type}</td>
+                    <td className="px-3 py-3 text-gray-600 max-w-40 truncate text-xs">{ins.location}</td>
+                    <td className="px-3 py-3 text-gray-900 text-center">{ins.productsChecked}</td>
+                    <td className="px-3 py-3 text-green-700 text-center font-medium">{ins.compliant}</td>
+                    <td className="px-3 py-3 text-center font-medium" style={{ color: ins.nonCompliant > 0 ? '#dc2626' : '#16a34a' }}>{ins.nonCompliant}</td>
+                    <td className="px-3 py-3">{statusBadge(ins.status)}</td>
+                    <td className="px-3 py-3 text-blue-600 text-xs">Details</td>
+                  </tr>
+                )
+              })}
+            </tbody>
+          </table>
         </div>
-      </main>
+      </div>
 
-      {/* New Inspection Modal */}
-      <Modal isOpen={showModal} onClose={() => setShowModal(false)} title="Schedule New Inspection">
-        <div className="space-y-4">
-          <div className="grid grid-cols-2 gap-4">
-            <div>
-              <label className="block text-xs font-medium text-gray-700 mb-1">Inspector Name</label>
-              <input className="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-400" placeholder="e.g. James Mwangi" />
-            </div>
-            <div>
-              <label className="block text-xs font-medium text-gray-700 mb-1">Date</label>
-              <input type="date" className="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-400" />
-            </div>
-            <div>
-              <label className="block text-xs font-medium text-gray-700 mb-1">County</label>
-              <select className="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none">
-                <option value="">Select county…</option>
-                {counties.map(c => <option key={c}>{c}</option>)}
-              </select>
-            </div>
-            <div>
-              <label className="block text-xs font-medium text-gray-700 mb-1">Inspection Type</label>
-              <select className="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none">
-                {['Routine','Targeted','Joint','Consumer Report'].map(t => <option key={t}>{t}</option>)}
-              </select>
-            </div>
-          </div>
-          <div>
-            <label className="block text-xs font-medium text-gray-700 mb-1">Location / Premises</label>
-            <input className="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none" placeholder="e.g. Nairobi CBD Retail Cluster" />
-          </div>
-          <div>
-            <label className="block text-xs font-medium text-gray-700 mb-1">Joint Agencies (optional)</label>
-            <div className="flex flex-wrap gap-2">
-              {['KRA','KEBS','ACA','KEPHIS','PPB'].map(a => (
-                <label key={a} className="flex items-center gap-1.5 text-sm cursor-pointer">
-                  <input type="checkbox" className="rounded" />
-                  <span className="font-medium" style={{ color: agencyColors[a] }}>{a}</span>
-                </label>
-              ))}
-            </div>
-          </div>
-          <div className="flex gap-3 justify-end pt-2">
-            <button onClick={() => setShowModal(false)} className="px-4 py-2 text-sm border border-gray-200 rounded-lg">Cancel</button>
-            <button onClick={() => { alert('Inspection scheduled.'); setShowModal(false) }}
-              className="px-5 py-2 text-sm text-white rounded-lg font-medium" style={{ backgroundColor: agency?.color || '#003087' }}>
-              Schedule
-            </button>
-          </div>
-        </div>
-      </Modal>
-
-      {/* Detail Modal */}
+      {/* Modal */}
       {selected && (
-        <Modal isOpen={!!selected} onClose={() => setSelected(null)} title={`Inspection ${selected.id}`} size="lg">
-          <div className="space-y-4 text-sm">
-            <div className="grid grid-cols-2 gap-4">
-              {[
-                ['Inspector', selected.inspector], ['Agency', selected.inspectorAgency],
-                ['Date', selected.date], ['County', selected.county],
-                ['Type', selected.type], ['Status', selected.status],
-                ['Location', selected.location], ['Products Checked', selected.productsChecked || 'N/A'],
-              ].map(([k, v]) => (
-                <div key={k}><div className="text-xs text-gray-500">{k}</div><div className="font-medium text-gray-900">{v}</div></div>
+        <div className="fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center p-4">
+          <div className="bg-white rounded-2xl shadow-2xl w-full max-w-lg p-6">
+            <div className="flex items-start justify-between mb-4">
+              <div>
+                <h3 className="text-lg font-bold text-gray-900">Inspection {selected.id}</h3>
+                <p className="text-sm text-gray-500">{selected.type} — {selected.county}</p>
+              </div>
+              <button onClick={() => setSelected(null)} className="text-gray-400 hover:text-gray-600"><X size={20} /></button>
+            </div>
+            <div className="grid grid-cols-2 gap-3 text-sm mb-4">
+              {[['Date', selected.date], ['Inspector', selected.inspector], ['Agency', selected.inspectorAgency], ['County', selected.county], ['Type', selected.type], ['Status', selected.status], ['Products Checked', selected.productsChecked], ['Compliant', selected.compliant], ['Non-Compliant', selected.nonCompliant]].map(([k, v]) => (
+                <div key={k}>
+                  <div className="text-xs text-gray-500 mb-0.5">{k}</div>
+                  <div className="font-medium text-gray-900">{k === 'Status' ? statusBadge(v) : v}</div>
+                </div>
               ))}
             </div>
-            {selected.status === 'Completed' && (
-              <div>
-                <div className="text-xs text-gray-500 mb-2">Compliance Summary</div>
-                <div className="flex gap-4">
-                  <div className="flex-1 bg-green-50 rounded-lg p-3 text-center">
-                    <div className="text-2xl font-bold text-green-600">{selected.compliant}</div>
-                    <div className="text-xs text-green-600">Compliant</div>
-                  </div>
-                  <div className="flex-1 bg-red-50 rounded-lg p-3 text-center">
-                    <div className="text-2xl font-bold text-red-600">{selected.nonCompliant}</div>
-                    <div className="text-xs text-red-600">Non-Compliant</div>
-                  </div>
-                  <div className="flex-1 bg-blue-50 rounded-lg p-3 text-center">
-                    <div className="text-2xl font-bold text-blue-600">{selected.productsChecked}</div>
-                    <div className="text-xs text-blue-600">Total Checked</div>
-                  </div>
-                </div>
-              </div>
-            )}
+            <div className="border-t border-gray-100 pt-3">
+              <div className="text-xs font-semibold text-gray-500 mb-1 uppercase">Location</div>
+              <p className="text-sm text-gray-900">{selected.location}</p>
+            </div>
             {selected.findings && (
-              <div>
-                <div className="text-xs text-gray-500 mb-1">Findings & Actions</div>
-                <div className="bg-amber-50 border border-amber-100 rounded-lg p-3 text-gray-700">{selected.findings}</div>
+              <div className="border-t border-gray-100 pt-3 mt-3">
+                <div className="text-xs font-semibold text-gray-500 mb-1 uppercase">Findings</div>
+                <p className="text-sm text-gray-700 bg-gray-50 rounded p-3">{selected.findings}</p>
               </div>
             )}
           </div>
-        </Modal>
+        </div>
       )}
     </div>
   )
