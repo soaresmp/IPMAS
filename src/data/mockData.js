@@ -1,0 +1,194 @@
+export const counties = ['Nairobi', 'Mombasa', 'Kisumu', 'Nakuru', 'Eldoret', 'Thika', 'Malindi', 'Kitale', 'Garissa', 'Kakamega', 'Machakos', 'Meru', 'Nyeri', 'Kisii', 'Kericho', 'Embu', 'Migori', 'Homa Bay', 'Siaya', 'Bungoma', 'Vihiga', 'Trans Nzoia', 'Uasin Gishu', 'Elgeyo-Marakwet', 'Nandi', 'Baringo', 'Laikipia', 'Samburu', 'West Pokot', 'Turkana', 'Marsabit', 'Isiolo', 'Tharaka-Nithi', 'Kirinyaga', "Murang'a", 'Kiambu', 'Nyandarua', 'Kajiado', 'Makueni', 'Kitui', 'Taita-Taveta', 'Kwale', 'Kilifi', 'Tana River', 'Lamu', 'Wajir', 'Mandera']
+
+export const products = [
+  { id: 'P001', sku: 'BEV-TUSKER-500', name: 'Tusker Lager 500ml', category: 'Beverages - Alcohol', manufacturer: 'East African Breweries Ltd', hsCode: '2203.00.10', country: 'Kenya', agencies: ['KRA', 'KEBS'], status: 'Registered', registeredDate: '2024-01-15', permits: { KRA: 'KRA-2024-001234', KEBS: 'KEBS-PM-2024-8921' } },
+  { id: 'P002', sku: 'BEV-COKE-330', name: 'Coca-Cola 330ml', category: 'Beverages - Non-Alcoholic', manufacturer: 'Coca-Cola Beverages Africa', hsCode: '2202.10.10', country: 'Kenya', agencies: ['KRA', 'KEBS'], status: 'Registered', registeredDate: '2024-01-10', permits: { KRA: 'KRA-2024-001189', KEBS: 'KEBS-PM-2024-7823' } },
+  { id: 'P003', sku: 'PHM-AMOX-500', name: 'Amoxicillin 500mg Capsules', category: 'Pharmaceuticals', manufacturer: 'Cosmos Ltd', hsCode: '2941.10.00', country: 'Kenya', agencies: ['PPB', 'KEBS'], status: 'Registered', registeredDate: '2024-02-01', permits: { PPB: 'PPB-REG-2024-00234', KEBS: 'KEBS-PM-2024-9012' } },
+  { id: 'P004', sku: 'PHM-PARA-1G', name: 'Paracetamol 1g Tablets', category: 'Pharmaceuticals', manufacturer: 'Dawa Ltd', hsCode: '2942.00.00', country: 'Kenya', agencies: ['PPB'], status: 'Registered', registeredDate: '2024-01-20', permits: { PPB: 'PPB-REG-2024-00198' } },
+  { id: 'P005', sku: 'SEED-MAIZE-H614', name: 'H614D Hybrid Maize Seed 5kg', category: 'Agricultural Seeds', manufacturer: 'Kenya Seed Company', hsCode: '1005.10.00', country: 'Kenya', agencies: ['KEPHIS'], status: 'Registered', registeredDate: '2024-02-15', permits: { KEPHIS: 'KEPHIS-SC-2024-3421' } },
+  { id: 'P006', sku: 'SEED-SUNFL-PAN', name: 'Pannar Sunflower Seed 2kg', category: 'Agricultural Seeds', manufacturer: 'Pannar Seed Ltd', hsCode: '1206.00.00', country: 'South Africa', agencies: ['KEPHIS', 'KEBS'], status: 'Registered', registeredDate: '2024-03-01', permits: { KEPHIS: 'KEPHIS-SC-2024-3567', KEBS: 'KEBS-ISM-2024-11234' } },
+  { id: 'P007', sku: 'ELEC-PANA-TV', name: 'Panasonic 43in Smart TV', category: 'Electronics', manufacturer: 'Panasonic Corp', hsCode: '8528.72.90', country: 'Japan', agencies: ['KEBS', 'ACA'], status: 'Registered', registeredDate: '2024-01-05', permits: { KEBS: 'KEBS-ISM-2024-10891', ACA: 'ACA-IP-2024-0234' } },
+  { id: 'P008', sku: 'COS-LOreal-SH', name: "L'Oreal Paris Shampoo 400ml", category: 'Cosmetics', manufacturer: "L'Oreal S.A.", hsCode: '3305.10.00', country: 'France', agencies: ['KEBS', 'ACA'], status: 'Registered', registeredDate: '2024-02-20', permits: { KEBS: 'KEBS-ISM-2024-11567', ACA: 'ACA-IP-2024-0312' } },
+  { id: 'P009', sku: 'BEV-WINE-RB', name: 'Red Baron Dry Wine 750ml', category: 'Beverages - Alcohol', manufacturer: 'Cape Wines SA', hsCode: '2204.21.00', country: 'South Africa', agencies: ['KRA', 'KEBS'], status: 'Pending', registeredDate: '2024-03-10', permits: { KRA: 'KRA-2024-APP-891' } },
+  { id: 'P010', sku: 'TOB-MBORO-20', name: 'Embassy Cigarettes 20s', category: 'Tobacco', manufacturer: 'British American Tobacco', hsCode: '2402.20.10', country: 'Kenya', agencies: ['KRA', 'KEBS'], status: 'Registered', registeredDate: '2023-12-01', permits: { KRA: 'KRA-2023-004521', KEBS: 'KEBS-PM-2023-6789' } },
+  { id: 'P011', sku: 'PHM-INS-NOVORAP', name: 'NovoRapid Insulin 10ml', category: 'Pharmaceuticals', manufacturer: 'Novo Nordisk', hsCode: '2937.12.00', country: 'Denmark', agencies: ['PPB', 'KEBS'], status: 'Registered', registeredDate: '2024-01-25', permits: { PPB: 'PPB-REG-2024-00267', KEBS: 'KEBS-ISM-2024-10945' } },
+  { id: 'P012', sku: 'SEED-WHEAT-ROB', name: 'Robin Wheat Seed 5kg', category: 'Agricultural Seeds', manufacturer: 'Kitale Seed Station', hsCode: '1001.19.00', country: 'Kenya', agencies: ['KEPHIS'], status: 'Registered', registeredDate: '2024-02-28', permits: { KEPHIS: 'KEPHIS-SC-2024-3698' } },
+  { id: 'P013', sku: 'FMCG-UNILEV-SURF', name: 'Surf Washing Powder 2kg', category: 'FMCG', manufacturer: 'Unilever Kenya', hsCode: '3402.20.00', country: 'Kenya', agencies: ['KEBS'], status: 'Registered', registeredDate: '2024-01-12', permits: { KEBS: 'KEBS-PM-2024-8234' } },
+  { id: 'P014', sku: 'BEV-WATER-EVIAN', name: 'Evian Mineral Water 1.5L', category: 'Beverages - Water', manufacturer: 'Danone Waters', hsCode: '2201.10.10', country: 'France', agencies: ['KRA', 'KEBS'], status: 'Registered', registeredDate: '2024-02-05', permits: { KRA: 'KRA-2024-001456', KEBS: 'KEBS-ISM-2024-11089' } },
+  { id: 'P015', sku: 'PHM-MALARIA-COAR', name: 'Coartem Malaria Tablets 24s', category: 'Pharmaceuticals', manufacturer: 'Novartis AG', hsCode: '2942.00.00', country: 'Switzerland', agencies: ['PPB', 'KEBS'], status: 'Registered', registeredDate: '2024-03-05', permits: { PPB: 'PPB-REG-2024-00289', KEBS: 'KEBS-ISM-2024-11456' } },
+  { id: 'P016', sku: 'ELEC-SAMSUNG-PHN', name: 'Samsung Galaxy A54 5G', category: 'Electronics', manufacturer: 'Samsung Electronics', hsCode: '8517.12.90', country: 'South Korea', agencies: ['KEBS', 'ACA'], status: 'Under Review', registeredDate: '2024-03-15', permits: {} },
+  { id: 'P017', sku: 'BEV-KREST-BITTERS', name: 'Krest Bitter Lemon 300ml', category: 'Beverages - Non-Alcoholic', manufacturer: 'Coca-Cola Beverages Africa', hsCode: '2202.10.10', country: 'Kenya', agencies: ['KRA', 'KEBS'], status: 'Registered', registeredDate: '2023-11-20', permits: { KRA: 'KRA-2023-004312', KEBS: 'KEBS-PM-2023-6234' } },
+  { id: 'P018', sku: 'AGRO-UREA-50', name: 'Urea Fertilizer 50kg', category: 'Agro-inputs', manufacturer: 'MEA Ltd', hsCode: '3102.10.00', country: 'Kenya', agencies: ['KEPHIS', 'KEBS'], status: 'Suspended', registeredDate: '2023-10-01', permits: { KEPHIS: 'KEPHIS-AI-2023-2134' } },
+  { id: 'P019', sku: 'COS-NIVEA-LOTION', name: 'Nivea Body Lotion 400ml', category: 'Cosmetics', manufacturer: 'Beiersdorf AG', hsCode: '3304.99.00', country: 'Germany', agencies: ['KEBS'], status: 'Registered', registeredDate: '2024-01-30', permits: { KEBS: 'KEBS-ISM-2024-10712' } },
+  { id: 'P020', sku: 'TOB-SPORT-CIGARS', name: 'Sport Cigars 5-pack', category: 'Tobacco', manufacturer: 'Kenya Tobacco Ltd', hsCode: '2402.10.00', country: 'Kenya', agencies: ['KRA'], status: 'Registered', registeredDate: '2024-02-10', permits: { KRA: 'KRA-2024-001567' } },
+  { id: 'P021', sku: 'PHM-ARTEM-IV', name: 'Artesunate Injection 60mg', category: 'Pharmaceuticals', manufacturer: 'Guilin Pharma', hsCode: '2942.00.00', country: 'China', agencies: ['PPB', 'KEBS'], status: 'Pending', registeredDate: '2024-03-20', permits: {} },
+  { id: 'P022', sku: 'SEED-BEAN-KK15', name: 'KK15 Kenya Njahi Bean 1kg', category: 'Agricultural Seeds', manufacturer: 'KALRO', hsCode: '0713.20.00', country: 'Kenya', agencies: ['KEPHIS'], status: 'Registered', registeredDate: '2024-02-18', permits: { KEPHIS: 'KEPHIS-SC-2024-3712' } },
+  { id: 'P023', sku: 'ELEC-LG-FRIDGE', name: 'LG 260L Double Door Fridge', category: 'Electronics', manufacturer: 'LG Electronics', hsCode: '8418.21.00', country: 'South Korea', agencies: ['KEBS', 'ACA'], status: 'Registered', registeredDate: '2024-01-08', permits: { KEBS: 'KEBS-ISM-2024-10645', ACA: 'ACA-IP-2024-0201' } },
+  { id: 'P024', sku: 'BEV-REDBL-250', name: 'Red Bull Energy Drink 250ml', category: 'Beverages - Non-Alcoholic', manufacturer: 'Red Bull GmbH', hsCode: '2202.10.10', country: 'Austria', agencies: ['KRA', 'KEBS'], status: 'Registered', registeredDate: '2024-01-18', permits: { KRA: 'KRA-2024-001345', KEBS: 'KEBS-ISM-2024-10834' } },
+  { id: 'P025', sku: 'PHM-ARV-ZIDOV', name: 'Zidovudine 300mg ARV', category: 'Pharmaceuticals', manufacturer: 'CIPLA Ltd', hsCode: '2934.99.00', country: 'India', agencies: ['PPB', 'KEBS'], status: 'Registered', registeredDate: '2023-12-15', permits: { PPB: 'PPB-REG-2023-00789', KEBS: 'KEBS-ISM-2023-9867' } }
+]
+
+export const marks = [
+  { id: 'GOK-2024-TUSKER-001', product: 'Tusker Lager 500ml', manufacturer: 'EABL', agency: 'KRA', quantity: 500000, issued: '2024-03-01', expiry: '2025-03-01', status: 'Active', applied: 487234, remaining: 12766, markType: 'Excise Stamp' },
+  { id: 'GOK-2024-COKE-002', product: 'Coca-Cola 330ml', manufacturer: 'CCBA', agency: 'KRA', quantity: 1000000, issued: '2024-02-15', expiry: '2025-02-15', status: 'Active', applied: 934521, remaining: 65479, markType: 'Excise Stamp' },
+  { id: 'GOK-2024-AMOX-003', product: 'Amoxicillin 500mg', manufacturer: 'Cosmos Ltd', agency: 'PPB', quantity: 200000, issued: '2024-02-01', expiry: '2025-02-01', status: 'Active', applied: 187654, remaining: 12346, markType: 'Serialization Label' },
+  { id: 'GOK-2024-MAIZE-004', product: 'H614D Hybrid Maize 5kg', manufacturer: 'Kenya Seed Co', agency: 'KEPHIS', quantity: 300000, issued: '2024-01-20', expiry: '2024-12-31', status: 'Active', applied: 278912, remaining: 21088, markType: 'Seed Certification Label' },
+  { id: 'GOK-2024-TV-005', product: 'Panasonic 43in Smart TV', manufacturer: 'Panasonic Corp', agency: 'KEBS', quantity: 5000, issued: '2024-02-10', expiry: '2025-02-10', status: 'Active', applied: 4123, remaining: 877, markType: 'ISM Stamp' },
+  { id: 'GOK-2024-BAT-006', product: 'Embassy Cigarettes 20s', manufacturer: 'BAT Kenya', agency: 'KRA', quantity: 2000000, issued: '2024-01-10', expiry: '2025-01-10', status: 'Active', applied: 1876543, remaining: 123457, markType: 'Excise Stamp' },
+  { id: 'GOK-2024-INSULIN-007', product: 'NovoRapid Insulin 10ml', manufacturer: 'Novo Nordisk', agency: 'PPB', quantity: 50000, issued: '2024-01-25', expiry: '2025-01-25', status: 'Active', applied: 47234, remaining: 2766, markType: 'Serialization Label' },
+  { id: 'GOK-2024-WINE-008', product: 'Red Baron Dry Wine 750ml', manufacturer: 'Cape Wines SA', agency: 'KRA', quantity: 100000, issued: '2024-03-05', expiry: '2025-03-05', status: 'Pending', applied: 0, remaining: 100000, markType: 'Excise Stamp' },
+  { id: 'GOK-2024-WHEAT-009', product: 'Robin Wheat Seed 5kg', manufacturer: 'Kitale Seed Station', agency: 'KEPHIS', quantity: 150000, issued: '2024-02-28', expiry: '2024-12-31', status: 'Active', applied: 89234, remaining: 60766, markType: 'Seed Certification Label' },
+  { id: 'GOK-2024-SURF-010', product: 'Surf Washing Powder 2kg', manufacturer: 'Unilever Kenya', agency: 'KEBS', quantity: 300000, issued: '2024-01-12', expiry: '2025-01-12', status: 'Active', applied: 256789, remaining: 43211, markType: 'Permit Mark' },
+  { id: 'GOK-2024-EVIAN-011', product: 'Evian Mineral Water 1.5L', manufacturer: 'Danone Waters', agency: 'KRA', quantity: 200000, issued: '2024-02-05', expiry: '2025-02-05', status: 'Active', applied: 178234, remaining: 21766, markType: 'Excise Stamp' },
+  { id: 'GOK-2024-COAR-012', product: 'Coartem Malaria Tablets 24s', manufacturer: 'Novartis AG', agency: 'PPB', quantity: 500000, issued: '2024-03-01', expiry: '2025-03-01', status: 'Active', applied: 423456, remaining: 76544, markType: 'Serialization Label' },
+  { id: 'GOK-2024-LOREAL-013', product: "L'Oreal Paris Shampoo 400ml", manufacturer: "L'Oreal S.A.", agency: 'KEBS', quantity: 80000, issued: '2024-02-20', expiry: '2025-02-20', status: 'Active', applied: 67234, remaining: 12766, markType: 'ISM Stamp' },
+  { id: 'GOK-2024-REDBL-014', product: 'Red Bull Energy Drink 250ml', manufacturer: 'Red Bull GmbH', agency: 'KRA', quantity: 300000, issued: '2024-01-18', expiry: '2025-01-18', status: 'Active', applied: 278345, remaining: 21655, markType: 'Excise Stamp' },
+  { id: 'GOK-2024-ARV-015', product: 'Zidovudine 300mg ARV', manufacturer: 'CIPLA Ltd', agency: 'PPB', quantity: 1000000, issued: '2023-12-15', expiry: '2024-12-15', status: 'Active', applied: 934567, remaining: 65433, markType: 'Serialization Label' }
+]
+
+export const inspections = [
+  { id: 'INS-2024-0891', date: '2024-03-15', inspector: 'James Mwangi', inspectorAgency: 'KRA', county: 'Nairobi', type: 'Routine', location: 'Nairobi CBD Retail Cluster', productsChecked: 234, compliant: 228, nonCompliant: 6, status: 'Completed', findings: 'Minor labeling violations found in 6 products. Corrective action issued.' },
+  { id: 'INS-2024-0892', date: '2024-03-14', inspector: 'Grace Njeri', inspectorAgency: 'ACA', county: 'Mombasa', type: 'Targeted', location: 'Mombasa Port Bonded Warehouse', productsChecked: 89, compliant: 72, nonCompliant: 17, status: 'Completed', findings: 'Counterfeit electronics seized. Case opened: CASE-2024-0123.' },
+  { id: 'INS-2024-0893', date: '2024-03-13', inspector: 'David Otieno', inspectorAgency: 'KEBS', county: 'Nairobi', type: 'Joint', location: 'Industrial Area Manufacturing Zone', productsChecked: 512, compliant: 489, nonCompliant: 23, status: 'Completed', findings: 'Joint inspection with KRA. Missing marks detected on beverages.' },
+  { id: 'INS-2024-0894', date: '2024-03-12', inspector: 'Sarah Kamau', inspectorAgency: 'PPB', county: 'Kisumu', type: 'Routine', location: 'Kisumu Market Pharmacy Row', productsChecked: 156, compliant: 154, nonCompliant: 2, status: 'Completed', findings: 'Two expired pharmaceutical lots identified and quarantined.' },
+  { id: 'INS-2024-0895', date: '2024-03-11', inspector: 'Peter Koech', inspectorAgency: 'KEPHIS', county: 'Nakuru', type: 'Routine', location: 'Nakuru Agro-Vet Shops', productsChecked: 78, compliant: 71, nonCompliant: 7, status: 'Completed', findings: 'Uncertified seed bags found. Samples taken for laboratory analysis.' },
+  { id: 'INS-2024-0896', date: '2024-03-18', inspector: 'Ann Wanjiku', inspectorAgency: 'ACA', county: 'Nairobi', type: 'Targeted', location: 'Gikomba Market', productsChecked: 0, compliant: 0, nonCompliant: 0, status: 'Scheduled', findings: '' },
+  { id: 'INS-2024-0897', date: '2024-03-19', inspector: 'Michael Karanja', inspectorAgency: 'KEBS', county: 'Mombasa', type: 'Joint', location: 'Kilindini Port', productsChecked: 0, compliant: 0, nonCompliant: 0, status: 'Scheduled', findings: '' },
+  { id: 'INS-2024-0898', date: '2024-03-10', inspector: 'Lucy Achieng', inspectorAgency: 'KRA', county: 'Eldoret', type: 'Routine', location: 'Eldoret Town Centre', productsChecked: 198, compliant: 188, nonCompliant: 10, status: 'Completed', findings: 'Alcohol products found without valid excise stamps.' },
+  { id: 'INS-2024-0899', date: '2024-03-09', inspector: 'John Mutua', inspectorAgency: 'PPB', county: 'Nairobi', type: 'Routine', location: 'Nairobi Westlands Pharmacies', productsChecked: 203, compliant: 201, nonCompliant: 2, status: 'Completed', findings: 'Minor serialization discrepancies noted.' },
+  { id: 'INS-2024-0900', date: '2024-03-08', inspector: 'Rose Auma', inspectorAgency: 'KEPHIS', county: 'Kitale', type: 'Routine', location: 'Trans-Nzoia Seed Merchants', productsChecked: 145, compliant: 143, nonCompliant: 2, status: 'Completed', findings: 'Two seed merchants found with expired certification.' },
+  { id: 'INS-2024-0901', date: '2024-03-07', inspector: 'Thomas Kipkemoi', inspectorAgency: 'ACA', county: 'Nakuru', type: 'Consumer Report', location: 'Nakuru Town Mall', productsChecked: 45, compliant: 38, nonCompliant: 7, status: 'Completed', findings: 'Consumer complaint validated. Counterfeit cosmetics found.' },
+  { id: 'INS-2024-0902', date: '2024-03-20', inspector: 'Faith Chebet', inspectorAgency: 'KEBS', county: 'Kisumu', type: 'Routine', location: 'Kisumu Port Area Warehouses', productsChecked: 0, compliant: 0, nonCompliant: 0, status: 'Scheduled', findings: '' }
+]
+
+export const cases = [
+  { id: 'CASE-2024-0123', dateOpened: '2024-03-14', type: 'Counterfeit Electronics', brand: 'Panasonic', suspect: 'Unknown Importer', county: 'Mombasa', quantitySeized: 234, value: 4680000, status: 'Under Investigation', priority: 'High', inspector: 'Grace Njeri', description: 'Large shipment of counterfeit Panasonic TVs seized at Mombasa Port.' },
+  { id: 'CASE-2024-0119', dateOpened: '2024-03-08', type: 'IP Violation', brand: 'Nike', suspect: 'Jua Kali Traders Assoc.', county: 'Nairobi', quantitySeized: 1567, value: 2350500, status: 'Prosecution', priority: 'Medium', inspector: 'Ann Wanjiku', description: 'Counterfeit Nike footwear being produced and sold in Gikomba market.' },
+  { id: 'CASE-2024-0112', dateOpened: '2024-02-28', type: 'Smuggling', brand: 'Multiple', suspect: 'Coastal Traders Ltd', county: 'Mombasa', quantitySeized: 4521, value: 9042000, status: 'Under Investigation', priority: 'Critical', inspector: 'James Omondi', description: 'Unmarked goods without government marks smuggled via Mombasa port.' },
+  { id: 'CASE-2024-0098', dateOpened: '2024-02-15', type: 'Counterfeit Pharma', brand: 'Novartis', suspect: 'MedSupply Kenya Ltd', county: 'Nairobi', quantitySeized: 12000, value: 3600000, status: 'Prosecution', priority: 'Critical', inspector: 'Sarah Kamau', description: 'Fake Coartem malaria tablets being distributed to rural pharmacies.' },
+  { id: 'CASE-2024-0087', dateOpened: '2024-02-05', type: 'Fraud', brand: 'KRA', suspect: 'Liquor Den Nairobi', county: 'Nairobi', quantitySeized: 890, value: 1335000, status: 'Closed', priority: 'Medium', inspector: 'Peter Kibe', description: 'Reuse of excise stamps on alcohol products. Convicted with KES 500K fine.' },
+  { id: 'CASE-2024-0076', dateOpened: '2024-01-28', type: 'IP Violation', brand: "L'Oreal", suspect: 'Beauty World Imports', county: 'Nairobi', quantitySeized: 3421, value: 1710500, status: 'Open', priority: 'Low', inspector: 'Thomas Kipkemoi', description: "Counterfeit L'Oreal cosmetics sold in Nairobi beauty shops." },
+  { id: 'CASE-2024-0067', dateOpened: '2024-01-20', type: 'Counterfeit Seeds', brand: 'Kenya Seed Company', suspect: 'Agrovets Plus', county: 'Nakuru', quantitySeized: 1200, value: 600000, status: 'Under Investigation', priority: 'High', inspector: 'Rose Auma', description: 'Uncertified maize seeds being sold under Kenya Seed Company branding.' },
+  { id: 'CASE-2024-0054', dateOpened: '2024-01-10', type: 'Smuggling', brand: 'Multiple', suspect: 'Unknown', county: 'Kilifi', quantitySeized: 2134, value: 4268000, status: 'Open', priority: 'High', inspector: 'John Ouko', description: 'Large quantity of unmarked goods discovered in Malindi area.' },
+  { id: 'CASE-2023-0312', dateOpened: '2023-12-01', type: 'Counterfeit Pharma', brand: 'GSK', suspect: 'QuickMed Distributors', county: 'Kisumu', quantitySeized: 8900, value: 4450000, status: 'Closed', priority: 'Critical', inspector: 'David Otieno', description: 'Counterfeit antibiotics. Distributor convicted and fined KES 2M.' },
+  { id: 'CASE-2024-0143', dateOpened: '2024-03-18', type: 'IP Violation', brand: 'Samsung', suspect: 'Tech World Ltd', county: 'Nairobi', quantitySeized: 567, value: 8505000, status: 'Open', priority: 'High', inspector: 'Ann Wanjiku', description: 'Suspected counterfeit Samsung smartphones at Nairobi Electronics market.' }
+]
+
+export const traceEvents = {
+  'GOK-2024-TUSKER-001-487200': [
+    { id: 1, event: 'Mark Issued', timestamp: '2024-03-01 08:30:00', location: 'KRA Headquarters, Nairobi', county: 'Nairobi', officer: 'Mark Issuance System (Auto)', deviceId: 'KRA-SRV-001', agency: 'KRA', status: 'completed', details: 'Batch of 500,000 excise stamps issued for Tusker Lager 500ml' },
+    { id: 2, event: 'Mark Received at Manufacturer', timestamp: '2024-03-02 10:15:00', location: 'EABL Brewery, Ruaraka', county: 'Nairobi', officer: 'Amos Ochieng (EABL)', deviceId: 'EABL-RCP-003', agency: 'KRA', status: 'completed', details: 'Physical receipt of stamp batch confirmed. Batch No: B-2024-0891' },
+    { id: 3, event: 'Applied on Production Line', timestamp: '2024-03-05 14:22:00', location: 'EABL Brewery - Line 3, Ruaraka', county: 'Nairobi', officer: 'Production Line Monitor (Auto)', deviceId: 'EABL-PL-003', agency: 'KRA', status: 'completed', details: 'Stamp applied on bottle. Production line speed: 40,000 units/hr' },
+    { id: 4, event: 'Quality Check - KEBS', timestamp: '2024-03-05 16:00:00', location: 'EABL QA Lab, Ruaraka', county: 'Nairobi', officer: 'Faith Wanjiku (KEBS Inspector)', deviceId: 'KEBS-INS-007', agency: 'KEBS', status: 'completed', details: 'Product sampled and tested. Batch passed KEBS EAS 41 standard. Permit: KEBS-PM-2024-8921 valid.' },
+    { id: 5, event: 'Warehouse Dispatch', timestamp: '2024-03-06 09:00:00', location: 'EABL Central Warehouse, Thika Road', county: 'Kiambu', officer: 'Warehouse Management System (Auto)', deviceId: 'EABL-WH-001', agency: 'KRA', status: 'completed', details: 'Pallet P-2024-08910 containing 1,200 units dispatched to Nairobi distributor' },
+    { id: 6, event: 'Distributor Receipt', timestamp: '2024-03-07 11:30:00', location: 'Metro Distributors Ltd, Industrial Area', county: 'Nairobi', officer: 'Metro WMS (Auto)', deviceId: 'METRO-WMS-012', agency: 'KRA', status: 'completed', details: 'Received 1,200 units. Invoice INV-2024-METRO-0234 raised.' },
+    { id: 7, event: 'Retail Delivery', timestamp: '2024-03-10 08:45:00', location: 'Naivas Supermarket, Westlands Branch', county: 'Nairobi', officer: 'Delivery Agent: Samuel Ndungu', deviceId: 'METRO-VAN-007', agency: 'KRA', status: 'completed', details: '48 units delivered to retail shelf. Stock replenishment confirmed.' },
+    { id: 8, event: 'Consumer Verification', timestamp: '2024-03-15 19:22:00', location: 'Naivas Supermarket, Westlands', county: 'Nairobi', officer: 'Consumer (Anonymous)', deviceId: 'MOBILE-APP', agency: 'KRA', status: 'completed', details: 'Product verified as authentic via IPMAS mobile app. Result: AUTHENTIC' }
+  ],
+  'GOK-2024-AMOX-003-187600': [
+    { id: 1, event: 'Mark Issued', timestamp: '2024-02-01 09:00:00', location: 'PPB Headquarters, Nairobi', county: 'Nairobi', officer: 'Serialization System (Auto)', deviceId: 'PPB-SRV-001', agency: 'PPB', status: 'completed', details: 'Serialization labels batch issued. 200,000 serial numbers allocated.' },
+    { id: 2, event: 'Applied at Manufacturer', timestamp: '2024-02-05 10:30:00', location: 'Cosmos Ltd Manufacturing Plant, Nairobi', county: 'Nairobi', officer: 'Production Line (Auto)', deviceId: 'COSMOS-PL-002', agency: 'PPB', status: 'completed', details: 'Serial label affixed to Amoxicillin 500mg blister pack. Batch: AMX-2024-B007' },
+    { id: 3, event: 'PPB Quality Release', timestamp: '2024-02-07 14:00:00', location: 'Cosmos Ltd QA Department', county: 'Nairobi', officer: 'Dr. Jane Muturi (PPB Pharmacist)', deviceId: 'PPB-INS-004', agency: 'PPB', status: 'completed', details: 'Batch released after QC testing. COA confirmed. Shelf life: 2026-02-01.' },
+    { id: 4, event: 'Wholesale Distribution', timestamp: '2024-02-10 08:00:00', location: 'Cosmos Distribution Centre, Mombasa Road', county: 'Nairobi', officer: 'Distribution System (Auto)', deviceId: 'COSMOS-DC-001', agency: 'PPB', status: 'completed', details: 'Shipped to 14 licensed wholesale distributors across Kenya' },
+    { id: 5, event: 'Retail Pharmacy Receipt', timestamp: '2024-02-12 11:15:00', location: 'Goodlife Pharmacy, Kisumu Branch', county: 'Kisumu', officer: 'Pharmacist: Alice Oduya', deviceId: 'GLPH-POS-003', agency: 'PPB', status: 'completed', details: 'Received and logged in pharmacy system. Dispensed against valid prescription.' }
+  ],
+  'GOK-FAKE-0001': null
+}
+
+export const kpis = {
+  KRA: { primary: '1,243,891', primaryLabel: 'Marks Issued (YTD)', secondary: '1,247', secondaryLabel: 'Active Manufacturers', tertiary: '94.2%', tertiaryLabel: 'Compliance Rate', quaternary: 'KES 4.2B', quaternaryLabel: 'Revenue Protected' },
+  KEBS: { primary: '18,432', primaryLabel: 'Active Permits', secondary: '234,567', secondaryLabel: 'ISM Marks Issued', tertiary: '12,890', tertiaryLabel: 'CoC Processed', quaternary: '47', quaternaryLabel: 'Non-Compliant Alerts' },
+  ACA: { primary: '234', primaryLabel: 'Active Cases', secondary: '89', secondaryLabel: 'Seizures This Month', tertiary: '45,231', tertiaryLabel: 'Products Verified', quaternary: '3.2%', quaternaryLabel: 'Counterfeit Rate' },
+  KEPHIS: { primary: '2,847,334', primaryLabel: 'Seed Labels Issued', secondary: '312', secondaryLabel: 'Certified Merchants', tertiary: '1,892', tertiaryLabel: 'Export Certificates', quaternary: '445', quaternaryLabel: 'Active PIPs' },
+  PPB: { primary: '9,134', primaryLabel: 'Registered SKUs', secondary: '8.7B', secondaryLabel: 'Serialized Units', tertiary: '918', tertiaryLabel: 'Licensed Merchants', quaternary: '23', quaternaryLabel: 'Adverse Reports' }
+}
+
+export const chartData = {
+  monthlyMarks: [
+    { month: 'Apr', KRA: 89234, KEBS: 23451, PPB: 156789, KEPHIS: 234567 },
+    { month: 'May', KRA: 95123, KEBS: 25678, PPB: 167234, KEPHIS: 312456 },
+    { month: 'Jun', KRA: 102345, KEBS: 24123, PPB: 178901, KEPHIS: 289123 },
+    { month: 'Jul', KRA: 98765, KEBS: 26789, PPB: 189234, KEPHIS: 198456 },
+    { month: 'Aug', KRA: 110234, KEBS: 28901, PPB: 201567, KEPHIS: 178234 },
+    { month: 'Sep', KRA: 115678, KEBS: 27345, PPB: 212890, KEPHIS: 156789 },
+    { month: 'Oct', KRA: 108901, KEBS: 29123, PPB: 224123, KEPHIS: 134567 },
+    { month: 'Nov', KRA: 121234, KEBS: 30456, PPB: 235456, KEPHIS: 189234 },
+    { month: 'Dec', KRA: 134567, KEBS: 32789, PPB: 246789, KEPHIS: 223456 },
+    { month: 'Jan', KRA: 125890, KEBS: 31234, PPB: 258012, KEPHIS: 267890 },
+    { month: 'Feb', KRA: 118234, KEBS: 29678, PPB: 269345, KEPHIS: 312345 },
+    { month: 'Mar', KRA: 132456, KEBS: 33012, PPB: 280678, KEPHIS: 298765 }
+  ],
+  complianceByAgency: [
+    { agency: 'KRA', rate: 94.2, target: 95 },
+    { agency: 'KEBS', rate: 89.7, target: 90 },
+    { agency: 'ACA', rate: 96.8, target: 95 },
+    { agency: 'KEPHIS', rate: 91.3, target: 90 },
+    { agency: 'PPB', rate: 97.2, target: 95 }
+  ],
+  nonCompliantCounties: [
+    { county: 'Nairobi', count: 127 },
+    { county: 'Mombasa', count: 98 },
+    { county: 'Kisumu', count: 67 },
+    { county: 'Nakuru', count: 54 },
+    { county: 'Eldoret', count: 43 },
+    { county: 'Machakos', count: 38 },
+    { county: 'Thika', count: 31 },
+    { county: 'Kakamega', count: 28 }
+  ],
+  productCategories: [
+    { name: 'Beverages', value: 34 },
+    { name: 'Pharmaceuticals', value: 28 },
+    { name: 'Agricultural Seeds', value: 16 },
+    { name: 'Electronics', value: 10 },
+    { name: 'Tobacco', value: 7 },
+    { name: 'Cosmetics', value: 5 }
+  ],
+  monthlySeizures: [
+    { month: 'Apr', cases: 12, value: 4500000 },
+    { month: 'May', cases: 15, value: 6200000 },
+    { month: 'Jun', cases: 9, value: 3100000 },
+    { month: 'Jul', cases: 18, value: 8900000 },
+    { month: 'Aug', cases: 22, value: 11200000 },
+    { month: 'Sep', cases: 16, value: 7800000 },
+    { month: 'Oct', cases: 19, value: 9400000 },
+    { month: 'Nov', cases: 24, value: 13100000 },
+    { month: 'Dec', cases: 28, value: 15600000 },
+    { month: 'Jan', cases: 21, value: 10800000 },
+    { month: 'Feb', cases: 17, value: 8200000 },
+    { month: 'Mar', cases: 23, value: 12400000 }
+  ]
+}
+
+export const recentActivity = {
+  KRA: [
+    { time: '10 min ago', action: 'Mark batch issued', detail: 'GOK-2024-EVIAN-011: 200,000 stamps to Danone Waters', type: 'issue' },
+    { time: '45 min ago', action: 'Production report received', detail: 'EABL Ruaraka: 87,234 units produced today', type: 'report' },
+    { time: '2 hrs ago', action: 'Non-compliance alert', detail: 'Eldoret: 10 products with invalid stamps detected', type: 'alert' },
+    { time: '3 hrs ago', action: 'New manufacturer registered', detail: 'Molo Beverages Ltd — Permit: KRA-2024-001678', type: 'register' },
+    { time: '5 hrs ago', action: 'Forecast submitted', detail: 'CCBA forecast: 1.2M stamps needed for April', type: 'forecast' }
+  ],
+  KEBS: [
+    { time: '25 min ago', action: 'ISM permit renewed', detail: 'Panasonic Corp — KEBS-ISM-2024-11345 renewed for 12 months', type: 'issue' },
+    { time: '1 hr ago', action: 'CoC processed', detail: '234 consignments cleared at Mombasa port', type: 'report' },
+    { time: '2 hrs ago', action: 'Non-compliance alert', detail: 'Samsung Galaxy A54: awaiting KEBS certification', type: 'alert' },
+    { time: '4 hrs ago', action: 'Joint inspection completed', detail: 'Industrial Area: 512 products inspected with KRA', type: 'report' }
+  ],
+  ACA: [
+    { time: '15 min ago', action: 'New case opened', detail: 'CASE-2024-0143: Suspected counterfeit Samsung phones', type: 'alert' },
+    { time: '1 hr ago', action: 'Seizure completed', detail: 'Mombasa Port: 234 counterfeit Panasonic TVs seized', type: 'alert' },
+    { time: '3 hrs ago', action: 'Case closed', detail: 'CASE-2024-0087: Conviction and fine of KES 500K', type: 'report' },
+    { time: '5 hrs ago', action: 'Consumer report received', detail: 'Nakuru: 7 counterfeit cosmetic products identified', type: 'report' }
+  ],
+  KEPHIS: [
+    { time: '30 min ago', action: 'Seed labels issued', detail: '50,000 H614D Maize labels issued to Kenya Seed Company', type: 'issue' },
+    { time: '1.5 hrs ago', action: 'PIP approved', detail: 'Plant Import Permit PIP-2024-0445 approved for tomato seedlings', type: 'issue' },
+    { time: '3 hrs ago', action: 'Export certificate issued', detail: 'ECS-2024-1892: Cut flower export to Netherlands cleared', type: 'report' },
+    { time: '5 hrs ago', action: 'Uncertified seeds found', detail: 'Nakuru: 1,200 bags of uncertified maize seeds. Case opened.', type: 'alert' }
+  ],
+  PPB: [
+    { time: '20 min ago', action: 'New SKU registered', detail: 'Artesunate Injection 60mg — PPB-REG-2024-00301', type: 'register' },
+    { time: '2 hrs ago', action: 'Adverse event report', detail: 'Report received for Batch AMX-2024-B003. Under review.', type: 'alert' },
+    { time: '3 hrs ago', action: 'Serialization milestone', detail: 'PPB hit 8.7B serialized units for fiscal year 2023/24', type: 'report' },
+    { time: '6 hrs ago', action: 'License renewal', detail: 'Goodlife Pharmacy chain: 45 branches license renewed', type: 'issue' }
+  ]
+}
