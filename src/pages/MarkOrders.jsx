@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import { markOrders } from '../data/mockData.js'
 import { useApp } from '../context/AppContext.jsx'
-import { Package, Plus, X, Search, ChevronRight } from 'lucide-react'
+import { Package, Plus, X, Search, ChevronRight, CreditCard, ExternalLink, CheckCircle2 } from 'lucide-react'
 
 const AGENCY_COLORS = { KRA: '#003087', KEBS: '#006600', ACA: '#BB0000', KEPHIS: '#228B22', PPB: '#1a5276', VMD: '#5D4037', PCPB: '#4527A0', KEPROBA: '#E65100' }
 
@@ -9,6 +9,7 @@ const STATUS_STYLES = {
   'Draft': 'bg-gray-100 text-gray-700',
   'Pending Approval': 'bg-amber-100 text-amber-800',
   'Approved': 'bg-blue-100 text-blue-800',
+  'Awaiting Payment': 'bg-orange-100 text-orange-800',
   'In Production': 'bg-purple-100 text-purple-800',
   'Dispatched': 'bg-indigo-100 text-indigo-800',
   'Delivered': 'bg-cyan-100 text-cyan-800',
@@ -16,7 +17,9 @@ const STATUS_STYLES = {
   'Rejected': 'bg-red-100 text-red-800',
 }
 
-const STATUS_ORDER = ['Draft', 'Pending Approval', 'Approved', 'In Production', 'Dispatched', 'Delivered', 'Activated']
+const STATUS_ORDER = ['Draft', 'Pending Approval', 'Approved', 'Awaiting Payment', 'In Production', 'Dispatched', 'Delivered', 'Activated']
+
+const ECITIZEN_URL = 'https://ecitizen.go.ke'
 
 function StatusBadge({ status }) {
   return <span className={`px-2 py-0.5 rounded-full text-xs font-medium ${STATUS_STYLES[status] || 'bg-gray-100 text-gray-700'}`}>{status}</span>
@@ -160,7 +163,17 @@ export default function MarkOrders() {
                   <td className="px-3 py-3 text-gray-900 text-right whitespace-nowrap">{order.totalCost.toLocaleString()}</td>
                   <td className="px-3 py-3 text-xs text-gray-500 whitespace-nowrap">{order.applicationSite}</td>
                   <td className="px-3 py-3"><StatusBadge status={order.status} /></td>
-                  <td className="px-3 py-3 text-blue-600"><ChevronRight size={16} /></td>
+                  <td className="px-3 py-3">
+                    {order.status === 'Awaiting Payment' ? (
+                      <a href={ECITIZEN_URL} target="_blank" rel="noopener noreferrer"
+                        onClick={e => e.stopPropagation()}
+                        className="flex items-center gap-1 px-2 py-1 bg-orange-600 text-white text-xs font-medium rounded-lg hover:bg-orange-700 whitespace-nowrap">
+                        <CreditCard size={12} /> Pay
+                      </a>
+                    ) : (
+                      <ChevronRight size={16} className="text-blue-600" />
+                    )}
+                  </td>
                 </tr>
               ))}
             </tbody>
@@ -209,6 +222,48 @@ export default function MarkOrders() {
               ))}
             </div>
 
+            {/* Payment section */}
+            <div className="mb-4 rounded-xl border p-4 bg-orange-50 border-orange-100">
+              <div className="text-xs font-semibold text-gray-500 uppercase mb-3 flex items-center gap-1.5">
+                <CreditCard size={13} /> eCitizen Payment
+              </div>
+              {selected.paymentStatus === 'Paid' ? (
+                <div className="flex items-start justify-between gap-3">
+                  <div>
+                    <div className="flex items-center gap-1.5 text-green-700 font-medium text-sm mb-1">
+                      <CheckCircle2 size={15} /> Payment Confirmed
+                    </div>
+                    <div className="text-xs text-gray-500">PRN: <span className="font-mono font-medium text-gray-800">{selected.paymentRef}</span></div>
+                    <div className="text-xs text-gray-500 mt-0.5">Paid on {selected.paymentDate} via {selected.paymentMethod}</div>
+                  </div>
+                  <div className="text-right">
+                    <div className="text-xs text-gray-500">Amount</div>
+                    <div className="font-bold text-gray-900">KES {selected.totalCost.toLocaleString()}</div>
+                  </div>
+                </div>
+              ) : selected.paymentStatus === 'Pending' ? (
+                <div className="flex items-start justify-between gap-3">
+                  <div>
+                    <div className="text-sm font-medium text-orange-800 mb-1">Payment Required</div>
+                    <div className="text-xs text-gray-600">PRN: <span className="font-mono font-medium text-gray-800">{selected.paymentRef}</span></div>
+                    <div className="text-xs text-gray-500 mt-0.5">Use this reference on eCitizen portal</div>
+                  </div>
+                  <div className="flex flex-col items-end gap-2">
+                    <div className="text-right">
+                      <div className="text-xs text-gray-500">Amount Due</div>
+                      <div className="font-bold text-orange-700">KES {selected.totalCost.toLocaleString()}</div>
+                    </div>
+                    <a href={ECITIZEN_URL} target="_blank" rel="noopener noreferrer"
+                      className="flex items-center gap-1.5 px-3 py-1.5 bg-orange-600 text-white text-xs font-medium rounded-lg hover:bg-orange-700">
+                      <CreditCard size={12} /> Pay on eCitizen <ExternalLink size={11} />
+                    </a>
+                  </div>
+                </div>
+              ) : (
+                <div className="text-xs text-gray-400 italic">Payment will be required once the order is approved.</div>
+              )}
+            </div>
+
             {selected.notes && (
               <div className="mb-4 p-3 bg-gray-50 rounded-lg text-xs text-gray-600">
                 <span className="font-medium">Notes: </span>{selected.notes}
@@ -221,6 +276,7 @@ export default function MarkOrders() {
                 {[
                   ['Ordered', selected.orderedDate],
                   ['Approved', selected.approvedDate],
+                  ['Payment', selected.paymentDate],
                   ['Dispatched', selected.dispatchedDate],
                   ['Delivered', selected.deliveredDate],
                   ['Activated', selected.activatedDate],
