@@ -22,16 +22,21 @@ function agencyBadge(id) {
 }
 
 export default function Products() {
-  const { currentAgency } = useApp()
+  const { currentAgency, currentUser } = useApp()
+  const isOperator = currentUser?.userType === 'operator'
+  const operatorId = currentUser?.operatorId
   const [search, setSearch] = useState('')
   const [catFilter, setCatFilter] = useState('')
   const [agencyFilter, setAgencyFilter] = useState('')
   const [statusFilter, setStatusFilter] = useState('')
   const [selected, setSelected] = useState(null)
 
-  const categories = [...new Set(products.map(p => p.category))].sort()
+  // Operators see only their own products
+  const visibleProducts = isOperator ? products.filter(p => p.operatorId === operatorId) : products
 
-  const filtered = products.filter(p => {
+  const categories = [...new Set(visibleProducts.map(p => p.category))].sort()
+
+  const filtered = visibleProducts.filter(p => {
     const q = search.toLowerCase()
     const matchSearch = !q || p.name.toLowerCase().includes(q) || p.sku.toLowerCase().includes(q) || p.manufacturer.toLowerCase().includes(q)
     const matchCat = !catFilter || p.category === catFilter
@@ -41,10 +46,10 @@ export default function Products() {
   })
 
   const counts = {
-    total: products.length,
-    registered: products.filter(p => p.status === 'Registered').length,
-    pending: products.filter(p => p.status === 'Pending').length,
-    suspended: products.filter(p => p.status === 'Suspended').length,
+    total: visibleProducts.length,
+    registered: visibleProducts.filter(p => p.status === 'Registered').length,
+    pending: visibleProducts.filter(p => p.status === 'Pending').length,
+    suspended: visibleProducts.filter(p => p.status === 'Suspended').length,
   }
 
   return (
@@ -93,7 +98,7 @@ export default function Products() {
       {/* Table */}
       <div className="bg-white rounded-xl border border-gray-100 shadow-sm overflow-hidden">
         <div className="px-5 py-3 border-b border-gray-100 text-sm text-gray-500">
-          Showing {filtered.length} of {products.length} products
+          Showing {filtered.length} of {visibleProducts.length} products
         </div>
         <div className="overflow-x-auto">
           <table className="w-full text-sm">

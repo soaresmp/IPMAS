@@ -19,14 +19,19 @@ function licenseStatus(status) {
 }
 
 export default function Operators() {
-  const { currentAgency } = useApp()
+  const { currentAgency, currentUser } = useApp()
   const agencyColor = currentAgency?.color || '#003087'
+  const isOperator = currentUser?.userType === 'operator'
+  const operatorId = currentUser?.operatorId
   const [search, setSearch] = useState('')
   const [typeFilter, setTypeFilter] = useState('')
   const [agencyFilter, setAgencyFilter] = useState('')
   const [selected, setSelected] = useState(null)
 
-  const filtered = operators.filter(op => {
+  // Operators can only see their own profile
+  const visibleOperators = isOperator ? operators.filter(op => op.id === operatorId) : operators
+
+  const filtered = visibleOperators.filter(op => {
     const q = search.toLowerCase()
     const matchSearch = !q || op.name.toLowerCase().includes(q) || op.pin.toLowerCase().includes(q) || op.sector.toLowerCase().includes(q)
     const matchType = !typeFilter || op.type === typeFilter
@@ -35,11 +40,11 @@ export default function Operators() {
   })
 
   const counts = {
-    total: operators.length,
-    manufacturers: operators.filter(o => o.type === 'Manufacturer').length,
-    importers: operators.filter(o => o.type === 'Importer').length,
-    distributors: operators.filter(o => o.type === 'Distributor').length,
-    retailers: operators.filter(o => o.type === 'Retailer').length,
+    total: visibleOperators.length,
+    manufacturers: visibleOperators.filter(o => o.type === 'Manufacturer').length,
+    importers: visibleOperators.filter(o => o.type === 'Importer').length,
+    distributors: visibleOperators.filter(o => o.type === 'Distributor').length,
+    retailers: visibleOperators.filter(o => o.type === 'Retailer').length,
   }
 
   return (
@@ -90,7 +95,7 @@ export default function Operators() {
 
       {/* Table */}
       <div className="bg-white rounded-xl border border-gray-100 shadow-sm overflow-hidden">
-        <div className="px-5 py-3 border-b border-gray-100 text-sm text-gray-500">Showing {filtered.length} of {operators.length} operators</div>
+        <div className="px-5 py-3 border-b border-gray-100 text-sm text-gray-500">Showing {filtered.length} of {visibleOperators.length} operators</div>
         <div className="overflow-x-auto">
           <table className="w-full text-sm">
             <thead className="bg-gray-50 text-xs text-gray-500 uppercase">

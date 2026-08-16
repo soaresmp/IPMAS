@@ -3,7 +3,7 @@ import { NavLink, useNavigate, useLocation } from 'react-router-dom'
 import { useApp } from '../../context/AppContext.jsx'
 import { LayoutDashboard, Package, Tag, GitBranch, ClipboardCheck, AlertTriangle, ShieldCheck, BarChart2, Building2, ShoppingCart, LogOut, Menu, X } from 'lucide-react'
 
-const navItems = [
+const agencyNavItems = [
   { path: '/', label: 'Dashboard', icon: LayoutDashboard },
   { path: '/operators', label: 'Operators', icon: Building2 },
   { path: '/mark-orders', label: 'Mark Orders', icon: ShoppingCart },
@@ -14,6 +14,12 @@ const navItems = [
   { path: '/cases', label: 'Cases', icon: AlertTriangle },
   { path: '/verification', label: 'Verification', icon: ShieldCheck },
   { path: '/reports', label: 'Reports', icon: BarChart2 },
+]
+
+const operatorNavItems = [
+  { path: '/mark-orders', label: 'My Mark Orders', icon: ShoppingCart },
+  { path: '/products', label: 'My Products', icon: Package },
+  { path: '/operators', label: 'My Profile', icon: Building2 },
 ]
 
 const pageTitles = {
@@ -95,7 +101,7 @@ export default function Layout({ children }) {
       </div>
 
       <nav className="flex-1 px-3 py-3 space-y-0.5 overflow-y-auto">
-        {navItems.map(({ path, label, icon: Icon }) => (
+        {(isOperator ? operatorNavItems : agencyNavItems).map(({ path, label, icon: Icon }) => (
           <NavLink key={path} to={path} end={path === '/'}
             onClick={closeSidebar}
             className={({ isActive }) =>

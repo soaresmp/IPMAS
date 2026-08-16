@@ -52,14 +52,19 @@ function OrderTimeline({ order }) {
 }
 
 export default function MarkOrders() {
-  const { currentAgency } = useApp()
+  const { currentAgency, currentUser } = useApp()
   const agencyColor = currentAgency?.color || '#003087'
+  const isOperator = currentUser?.userType === 'operator'
+  const operatorId = currentUser?.operatorId
   const [search, setSearch] = useState('')
   const [statusFilter, setStatusFilter] = useState('')
   const [agencyFilter, setAgencyFilter] = useState('')
   const [selected, setSelected] = useState(null)
 
-  const filtered = markOrders.filter(o => {
+  // Operators see only their own orders
+  const visibleOrders = isOperator ? markOrders.filter(o => o.operatorId === operatorId) : markOrders
+
+  const filtered = visibleOrders.filter(o => {
     const q = search.toLowerCase()
     const matchSearch = !q || o.operatorName.toLowerCase().includes(q) || o.id.toLowerCase().includes(q) || o.product.toLowerCase().includes(q)
     const matchStatus = !statusFilter || o.status === statusFilter
@@ -67,9 +72,9 @@ export default function MarkOrders() {
     return matchSearch && matchStatus && matchAgency
   })
 
-  const counts = STATUS_ORDER.reduce((acc, s) => ({ ...acc, [s]: markOrders.filter(o => o.status === s).length }), {})
-  const totalValue = markOrders.reduce((sum, o) => sum + (o.totalCost || 0), 0)
-  const totalMarks = markOrders.reduce((sum, o) => sum + (o.quantity || 0), 0)
+  const counts = STATUS_ORDER.reduce((acc, s) => ({ ...acc, [s]: visibleOrders.filter(o => o.status === s).length }), {})
+  const totalValue = visibleOrders.reduce((sum, o) => sum + (o.totalCost || 0), 0)
+  const totalMarks = visibleOrders.reduce((sum, o) => sum + (o.quantity || 0), 0)
 
   return (
     <div className="space-y-5">
@@ -86,7 +91,7 @@ export default function MarkOrders() {
       {/* Summary cards */}
       <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
         <div className="rounded-xl p-4 bg-blue-50 text-blue-800">
-          <div className="text-2xl font-bold">{markOrders.length}</div>
+          <div className="text-2xl font-bold">{visibleOrders.length}</div>
           <div className="text-sm font-medium">Total Orders</div>
         </div>
         <div className="rounded-xl p-4 bg-green-50 text-green-800">
@@ -137,7 +142,7 @@ export default function MarkOrders() {
 
       {/* Orders list */}
       <div className="bg-white rounded-xl border border-gray-100 shadow-sm overflow-hidden">
-        <div className="px-5 py-3 border-b border-gray-100 text-sm text-gray-500">Showing {filtered.length} of {markOrders.length} orders</div>
+        <div className="px-5 py-3 border-b border-gray-100 text-sm text-gray-500">Showing {filtered.length} of {visibleOrders.length} orders</div>
         <div className="overflow-x-auto">
           <table className="w-full text-sm">
             <thead className="bg-gray-50 text-xs text-gray-500 uppercase">
