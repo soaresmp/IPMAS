@@ -60,7 +60,7 @@ export default function Layout({ children }) {
         <div style={{ height: '7px', backgroundColor: '#006600' }} />
       </div>
 
-      <div className="px-4 py-4 flex-shrink-0" style={{ borderBottom: '1px solid rgba(255,255,255,0.08)' }}>
+      <div className="px-3 py-3 flex-shrink-0" style={{ borderBottom: '1px solid rgba(255,255,255,0.08)' }}>
         <div className="flex items-center justify-between mb-3">
           <div className="flex items-center gap-2.5">
             <div className="w-8 h-8 rounded-md flex items-center justify-center flex-shrink-0" style={{ backgroundColor: '#006600' }}>
@@ -100,25 +100,27 @@ export default function Layout({ children }) {
         )}
       </div>
 
-      <nav className="flex-1 px-3 py-3 space-y-0.5 overflow-y-auto">
-        {(isOperator ? operatorNavItems : agencyNavItems).map(({ path, label, icon: Icon }) => (
-          <NavLink key={path} to={path} end={path === '/'}
-            onClick={closeSidebar}
-            className={({ isActive }) =>
-              `flex items-center gap-3 px-3 py-2.5 rounded-md text-sm font-medium transition-colors ${isActive ? 'text-white' : 'text-slate-400 hover:text-white'}`
-            }
-            style={({ isActive }) => isActive
-              ? { backgroundColor: agencyColor }
-              : { '--tw-bg-opacity': 1 }}
-            onMouseOver={e => { if (!e.currentTarget.classList.contains('active')) e.currentTarget.style.backgroundColor = 'rgba(255,255,255,0.07)' }}
-            onMouseOut={e => { if (!e.currentTarget.style.backgroundColor?.includes(agencyColor)) e.currentTarget.style.backgroundColor = '' }}>
-            <Icon size={16} />
-            {label}
-          </NavLink>
-        ))}
+      <nav className="flex-1 px-2 py-2 overflow-y-auto" style={{ scrollbarWidth: 'thin', scrollbarColor: 'rgba(255,255,255,0.12) transparent' }}>
+        <div className="space-y-0.5">
+          {(isOperator ? operatorNavItems : agencyNavItems).map(({ path, label, icon: Icon }) => (
+            <NavLink key={path} to={path} end={path === '/'}
+              onClick={closeSidebar}
+              className={({ isActive }) =>
+                `flex items-center gap-2.5 px-3 py-2 rounded-md text-sm font-medium transition-colors ${isActive ? 'text-white' : 'text-slate-400 hover:text-white'}`
+              }
+              style={({ isActive }) => isActive
+                ? { backgroundColor: agencyColor }
+                : {}}
+              onMouseOver={e => { if (!e.currentTarget.style.backgroundColor?.includes(agencyColor)) e.currentTarget.style.backgroundColor = 'rgba(255,255,255,0.07)' }}
+              onMouseOut={e => { if (!e.currentTarget.style.backgroundColor?.includes(agencyColor)) e.currentTarget.style.backgroundColor = '' }}>
+              <Icon size={15} className="flex-shrink-0" />
+              <span className="truncate">{label}</span>
+            </NavLink>
+          ))}
+        </div>
       </nav>
 
-      <div className="px-4 py-4 flex-shrink-0" style={{ borderTop: '1px solid rgba(255,255,255,0.08)' }}>
+      <div className="px-3 py-3 flex-shrink-0" style={{ borderTop: '1px solid rgba(255,255,255,0.08)' }}>
         <div className="flex items-center gap-2 mb-3">
           <div className="w-8 h-8 rounded-full flex items-center justify-center text-white text-xs font-bold flex-shrink-0" style={{ backgroundColor: agencyColor }}>
             {currentUser?.name?.[0] || 'U'}
@@ -151,7 +153,7 @@ export default function Layout({ children }) {
 
       {/* Sidebar — desktop: always visible; mobile: slide in */}
       <aside
-        className={`fixed inset-y-0 left-0 z-40 w-64 flex flex-col transition-transform duration-200 md:relative md:translate-x-0 md:flex-shrink-0 ${sidebarOpen ? 'translate-x-0' : '-translate-x-full'}`}
+        className={`fixed inset-y-0 left-0 z-40 w-56 flex flex-col transition-transform duration-200 md:relative md:translate-x-0 md:flex-shrink-0 md:h-screen md:overflow-hidden ${sidebarOpen ? 'translate-x-0' : '-translate-x-full'}`}
         style={{ backgroundColor: SIDEBAR_BG }}
       >
         <SidebarContent />
