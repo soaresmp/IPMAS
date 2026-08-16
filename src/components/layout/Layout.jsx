@@ -23,14 +23,17 @@ const pageTitles = {
   '/verification': 'Product Verification', '/reports': 'Reports & Analytics',
 }
 
+const SIDEBAR_BG = '#0A2A0A'
+
 export default function Layout({ children }) {
   const { currentAgency, currentUser, setCurrentAgency, setCurrentUser } = useApp()
   const navigate = useNavigate()
   const location = useLocation()
   const [sidebarOpen, setSidebarOpen] = useState(false)
 
-  const agencyColor = currentAgency?.color || '#003087'
+  const agencyColor = currentAgency?.color || '#006600'
   const pageTitle = pageTitles[location.pathname] || 'IPMAS'
+  const isOperator = currentUser?.userType === 'operator'
 
   function handleLogout() {
     setCurrentAgency(null)
@@ -44,54 +47,86 @@ export default function Layout({ children }) {
 
   const SidebarContent = () => (
     <>
-      <div className="px-5 py-5 border-b border-slate-700">
+      {/* Kenya flag stripe */}
+      <div className="flex-shrink-0" style={{ display: 'flex', flexDirection: 'column' }}>
+        <div style={{ height: '5px', backgroundColor: '#0F0F0F' }} />
+        <div style={{ height: '4px', backgroundColor: '#BB0000' }} />
+        <div style={{ height: '7px', backgroundColor: '#006600' }} />
+      </div>
+
+      <div className="px-4 py-4 flex-shrink-0" style={{ borderBottom: '1px solid rgba(255,255,255,0.08)' }}>
         <div className="flex items-center justify-between mb-3">
-          <div className="flex items-center gap-3">
-            <div className="w-9 h-9 rounded-lg flex items-center justify-center flex-shrink-0" style={{ backgroundColor: agencyColor }}>
-              <svg viewBox="0 0 24 24" fill="white" className="w-5 h-5">
-                <path d="M12 1L3 5v6c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V5l-9-4z"/>
+          <div className="flex items-center gap-2.5">
+            <div className="w-8 h-8 rounded-md flex items-center justify-center flex-shrink-0" style={{ backgroundColor: '#006600' }}>
+              <svg viewBox="0 0 72 84" width="18" height="21">
+                <defs><clipPath id="sl"><path d="M4,4 H68 V52 Q68,80 36,80 Q4,80 4,52 Z"/></clipPath></defs>
+                <rect x="4" y="4" width="64" height="24" fill="#0F0F0F" clipPath="url(#sl)"/>
+                <rect x="4" y="28" width="64" height="24" fill="#BB0000" clipPath="url(#sl)"/>
+                <rect x="4" y="52" width="64" height="28" fill="#006600" clipPath="url(#sl)"/>
+                <line x1="36" y1="4" x2="36" y2="80" stroke="white" strokeWidth="3" clipPath="url(#sl)"/>
+                <path d="M4,4 H68 V52 Q68,80 36,80 Q4,80 4,52 Z" fill="none" stroke="white" strokeWidth="3"/>
               </svg>
             </div>
             <div>
-              <div className="text-white font-bold text-base leading-tight">IPMAS</div>
-              <div className="text-slate-400 text-xs">Gov. of Kenya</div>
+              <div className="text-white font-bold leading-tight" style={{ fontFamily: 'Georgia, Cambria, serif', fontSize: '1.05rem', letterSpacing: '-0.01em' }}>IPMAS</div>
+              <div className="text-xs" style={{ color: 'rgba(255,255,255,0.38)', letterSpacing: '0.06em', fontSize: '0.6rem', textTransform: 'uppercase' }}>
+                {isOperator ? 'Operator Portal' : 'Gov. of Kenya'}
+              </div>
             </div>
           </div>
-          <button onClick={closeSidebar} className="md:hidden text-slate-400 hover:text-white p-1">
+          <button onClick={closeSidebar} className="md:hidden p-1" style={{ color: 'rgba(255,255,255,0.4)' }}>
             <X size={20} />
           </button>
         </div>
-        <div className="rounded-lg px-3 py-2 text-xs" style={{ backgroundColor: agencyColor + '22', border: `1px solid ${agencyColor}55` }}>
-          <div className="font-semibold text-white">{currentAgency?.icon} {currentAgency?.shortName}</div>
-          <div className="text-slate-400 truncate">{currentAgency?.name}</div>
-        </div>
+
+        {isOperator ? (
+          <div className="rounded-md px-3 py-2 text-xs" style={{ backgroundColor: 'rgba(230,81,0,0.2)', border: '1px solid rgba(230,81,0,0.35)' }}>
+            <div className="font-semibold text-white text-xs truncate">🏢 {currentUser?.company}</div>
+            <div className="truncate mt-0.5" style={{ color: 'rgba(255,255,255,0.5)', fontSize: '0.65rem' }}>
+              {currentUser?.operatorType} · Licensed under {agencyColor && currentAgency?.shortName}
+            </div>
+          </div>
+        ) : (
+          <div className="rounded-md px-3 py-2 text-xs" style={{ backgroundColor: agencyColor + '25', border: `1px solid ${agencyColor}50` }}>
+            <div className="font-semibold text-white text-xs">{currentAgency?.icon} {currentAgency?.shortName}</div>
+            <div className="truncate mt-0.5" style={{ color: 'rgba(255,255,255,0.45)', fontSize: '0.65rem' }}>{currentAgency?.name}</div>
+          </div>
+        )}
       </div>
 
-      <nav className="flex-1 px-3 py-4 space-y-0.5 overflow-y-auto">
+      <nav className="flex-1 px-3 py-3 space-y-0.5 overflow-y-auto">
         {navItems.map(({ path, label, icon: Icon }) => (
           <NavLink key={path} to={path} end={path === '/'}
             onClick={closeSidebar}
             className={({ isActive }) =>
-              `flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium transition-all ${isActive ? 'text-white' : 'text-slate-400 hover:text-white hover:bg-slate-700'}`
+              `flex items-center gap-3 px-3 py-2.5 rounded-md text-sm font-medium transition-colors ${isActive ? 'text-white' : 'text-slate-400 hover:text-white'}`
             }
-            style={({ isActive }) => isActive ? { backgroundColor: agencyColor } : {}}>
-            <Icon size={17} />
+            style={({ isActive }) => isActive
+              ? { backgroundColor: agencyColor }
+              : { '--tw-bg-opacity': 1 }}
+            onMouseOver={e => { if (!e.currentTarget.classList.contains('active')) e.currentTarget.style.backgroundColor = 'rgba(255,255,255,0.07)' }}
+            onMouseOut={e => { if (!e.currentTarget.style.backgroundColor?.includes(agencyColor)) e.currentTarget.style.backgroundColor = '' }}>
+            <Icon size={16} />
             {label}
           </NavLink>
         ))}
       </nav>
 
-      <div className="px-4 py-4 border-t border-slate-700">
+      <div className="px-4 py-4 flex-shrink-0" style={{ borderTop: '1px solid rgba(255,255,255,0.08)' }}>
         <div className="flex items-center gap-2 mb-3">
-          <div className="w-8 h-8 rounded-full flex items-center justify-center text-white text-sm font-bold flex-shrink-0" style={{ backgroundColor: agencyColor }}>
+          <div className="w-8 h-8 rounded-full flex items-center justify-center text-white text-xs font-bold flex-shrink-0" style={{ backgroundColor: agencyColor }}>
             {currentUser?.name?.[0] || 'U'}
           </div>
           <div className="flex-1 min-w-0">
             <div className="text-white text-sm font-medium truncate">{currentUser?.name || 'User'}</div>
-            <div className="text-slate-400 text-xs truncate">{currentUser?.role}</div>
+            <div className="text-xs truncate" style={{ color: 'rgba(255,255,255,0.4)' }}>{currentUser?.role}</div>
           </div>
         </div>
-        <button onClick={handleLogout} className="w-full flex items-center gap-2 px-3 py-2 rounded-lg text-slate-400 hover:text-white hover:bg-slate-700 text-sm transition-all">
+        <button onClick={handleLogout}
+          className="w-full flex items-center gap-2 px-3 py-2 rounded-md text-sm transition-colors"
+          style={{ color: 'rgba(255,255,255,0.4)' }}
+          onMouseOver={e => { e.currentTarget.style.backgroundColor = 'rgba(255,255,255,0.07)'; e.currentTarget.style.color = 'white' }}
+          onMouseOut={e => { e.currentTarget.style.backgroundColor = ''; e.currentTarget.style.color = 'rgba(255,255,255,0.4)' }}>
           <LogOut size={15} /> Sign Out
         </button>
       </div>
@@ -111,14 +146,14 @@ export default function Layout({ children }) {
       {/* Sidebar — desktop: always visible; mobile: slide in */}
       <aside
         className={`fixed inset-y-0 left-0 z-40 w-64 flex flex-col transition-transform duration-200 md:relative md:translate-x-0 md:flex-shrink-0 ${sidebarOpen ? 'translate-x-0' : '-translate-x-full'}`}
-        style={{ backgroundColor: '#1e293b' }}
+        style={{ backgroundColor: SIDEBAR_BG }}
       >
         <SidebarContent />
       </aside>
 
       {/* Main */}
       <div className="flex-1 flex flex-col overflow-hidden min-w-0">
-        <header className="bg-white border-b border-gray-200 px-4 md:px-6 py-3 md:py-4 flex items-center justify-between flex-shrink-0">
+        <header className="bg-white px-4 md:px-6 py-3 md:py-4 flex items-center justify-between flex-shrink-0" style={{ borderBottom: '1px solid #e5e7eb', borderTop: '3px solid #006600' }}>
           <div className="flex items-center gap-3">
             <button
               onClick={() => setSidebarOpen(true)}
@@ -127,7 +162,9 @@ export default function Layout({ children }) {
               <Menu size={20} />
             </button>
             <div>
-              <div className="text-xs text-gray-400 mb-0.5 hidden sm:block">IPMAS / {currentAgency?.shortName}</div>
+              <div className="text-xs text-gray-400 mb-0.5 hidden sm:block">
+                IPMAS / {currentAgency?.shortName}{isOperator && ` · ${currentUser?.company}`}
+              </div>
               <h1 className="text-base md:text-lg font-semibold text-gray-900">{pageTitle}</h1>
             </div>
           </div>
