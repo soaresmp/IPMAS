@@ -1,10 +1,12 @@
 import { useState } from 'react'
 import { NavLink, useNavigate, useLocation } from 'react-router-dom'
 import { useApp } from '../../context/AppContext.jsx'
-import { LayoutDashboard, Package, Tag, GitBranch, ClipboardCheck, AlertTriangle, ShieldCheck, BarChart2, LogOut, Menu, X } from 'lucide-react'
+import { LayoutDashboard, Package, Tag, GitBranch, ClipboardCheck, AlertTriangle, ShieldCheck, BarChart2, Building2, ShoppingCart, LogOut, Menu, X } from 'lucide-react'
 
 const navItems = [
   { path: '/', label: 'Dashboard', icon: LayoutDashboard },
+  { path: '/operators', label: 'Operators', icon: Building2 },
+  { path: '/mark-orders', label: 'Mark Orders', icon: ShoppingCart },
   { path: '/products', label: 'Products', icon: Package },
   { path: '/marks', label: 'Marks', icon: Tag },
   { path: '/track', label: 'Track & Trace', icon: GitBranch },
@@ -15,7 +17,8 @@ const navItems = [
 ]
 
 const pageTitles = {
-  '/': 'Dashboard', '/products': 'Product Registry', '/marks': 'Government Marks',
+  '/': 'Dashboard', '/operators': 'Economic Operators', '/mark-orders': 'Mark Orders',
+  '/products': 'Product Registry', '/marks': 'Government Marks',
   '/track': 'Track & Trace', '/inspection': 'Inspections', '/cases': 'Case Management',
   '/verification': 'Product Verification', '/reports': 'Reports & Analytics',
 }

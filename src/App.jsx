@@ -10,6 +10,8 @@ import Inspection from './pages/Inspection.jsx'
 import Cases from './pages/Cases.jsx'
 import Verification from './pages/Verification.jsx'
 import Reports from './pages/Reports.jsx'
+import Operators from './pages/Operators.jsx'
+import MarkOrders from './pages/MarkOrders.jsx'
 
 export default function App() {
   const { currentAgency } = useApp()
@@ -18,6 +20,8 @@ export default function App() {
     <Layout>
       <Routes>
         <Route path="/" element={<Dashboard />} />
+        <Route path="/operators" element={<Operators />} />
+        <Route path="/mark-orders" element={<MarkOrders />} />
         <Route path="/products" element={<Products />} />
         <Route path="/marks" element={<Marks />} />
         <Route path="/track" element={<TrackTrace />} />
