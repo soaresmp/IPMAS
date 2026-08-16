@@ -80,7 +80,7 @@ export default function Login() {
 
       {/* ── Left branding panel ──────────────────────────────────── */}
       <div className="hidden md:flex flex-col md:w-5/12"
-        style={{ backgroundColor: '#C0392B', position: 'relative', overflow: 'hidden', minHeight: '100vh' }}>
+        style={{ backgroundColor: '#1A5C1A', position: 'relative', overflow: 'hidden', minHeight: '100vh' }}>
 
         <FlagStripe heights={[7, 6, 10]} />
 
