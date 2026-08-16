@@ -76,12 +76,11 @@ export default function Login() {
   }
 
   return (
-    <div style={{ display: 'flex', flexDirection: 'column', minHeight: '100vh' }}
-      className="md:flex-row">
+    <div className="flex flex-col md:flex-row" style={{ minHeight: '100vh' }}>
 
       {/* ── Left branding panel ──────────────────────────────────── */}
       <div className="hidden md:flex flex-col md:w-5/12"
-        style={{ backgroundColor: '#0A2A0A', position: 'relative', overflow: 'hidden' }}>
+        style={{ backgroundColor: '#0A2A0A', position: 'relative', overflow: 'hidden', minHeight: '100vh' }}>
 
         <FlagStripe heights={[7, 6, 10]} />
 
